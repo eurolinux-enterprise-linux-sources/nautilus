@@ -8,7 +8,7 @@
 
 Name:           nautilus
 Version:        3.22.3
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        File manager for GNOME
 
 License:        GPLv2+
@@ -19,6 +19,7 @@ Source0:        https://download.gnome.org/sources/%{name}/3.22/%{name}-%{versio
 Patch0:         0001-general-remove-gnome-autoar.patch
 Patch1:         0001-translation-Add-Japanese.patch
 Patch2:         0001-mime-actions-use-file-metadata-for-trusting-desktop-.patch
+Patch3:         nautilus_785292.patch
 
 BuildRequires:  pkgconfig(exempi-2.0) >= %{exempi_version}
 BuildRequires:  pkgconfig(glib-2.0) >= %{glib2_version}
@@ -82,6 +83,7 @@ for developing nautilus extensions.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 # For patch0
@@ -163,9 +165,13 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas >&/dev/null || :
 %doc %{_datadir}/gtk-doc/html/libnautilus-extension/
 
 %changelog
+* Thu Nov 02 2017 Carlos Soriano <csoriano@redhat.com> 3.22.3-5
+- Fix exempi not being initialized. Upstream bugzilla.gnome.org/785292
+ Resolves: #1496713
+
 * Thu Nov 02 2017 Carlos Soriano <csoriano@redhat.com> 3.22.3-4
 - Fix desktop files security issue (upstream bugzilla.gnome.org/777991)
- Resolves: #1490949
+ Resolves: #1490948
 
 * Mon May 29 2017 Carlos Soriano <csoriano@redhat.com> 3.22.3-3
 - Add Japanese translation
