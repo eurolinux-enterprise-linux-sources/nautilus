@@ -15,7 +15,7 @@
 Name:           nautilus
 Summary:        File manager for GNOME
 Version:        2.28.4
-Release:        15%{?dist}
+Release:        18%{?dist}
 License:        GPLv2+
 Group:          User Interface/Desktops
 Source:         http://download.gnome.org/sources/%{name}/2.28/%{name}-%{version}.tar.bz2
@@ -118,6 +118,38 @@ Patch28:	nautilus-translations-gujarati.patch
 Patch29:	nautilus-translations-bengali-india.patch
 Patch30:	nautilus-578086-po-2.patch
 
+# "Volume is busy" window should have a title
+# https://bugzilla.redhat.com/show_bug.cgi?id=616774
+Patch31:	nautilus-2.28.4-gtk-mount-operation-parent.patch
+
+# Can't rename places link in nautilus
+# https://bugzilla.redhat.com/show_bug.cgi?id=636881
+Patch32:	nautilus-2.28.4-bookmark-rename.patch
+
+# Files on Desktop cannot consistently exist after switching language
+# https://bugzilla.redhat.com/show_bug.cgi?id=661589
+Patch33:	nautilus-2.28.4-xdg-dirs-refresh.patch
+
+# Nautilus doesn't remember window position or size
+# https://bugzilla.redhat.com/show_bug.cgi?id=654091
+Patch34:	nautilus-gconf-navigation_window_saved_geometry.patch
+Patch35:	nautilus-gconf-navigation_window_saved_maximized.patch
+Patch36:	nautilus-gconf-correct-type.patch
+Patch37:	nautilus-gconf-default-value.patch
+
+# segfault in nautilus while deleting two archives and two dirs
+# https://bugzilla.redhat.com/show_bug.cgi?id=652607
+Patch38:	nautilus-2.32.2.1-peek_display_name-crash.patch
+
+# problem with copying large amount of files from ftp server
+# https://bugzilla.redhat.com/show_bug.cgi?id=666086
+Patch39:	nautilus-2.28.4-recursive-sync-gio-calls.patch
+
+# Nautilus doesn't refresh buttons of folders in status bar
+# https://bugzilla.redhat.com/show_bug.cgi?id=690147
+Patch40:	nautilus-2.31.5-cleanup-pathbar.patch
+
+
 %description
 Nautilus is the file manager and graphical shell for the GNOME desktop
 that makes it easy to manage your files and the rest of your system.
@@ -166,6 +198,17 @@ for developing nautilus extensions.
 %patch28 -p1 -b .translation-gujarati
 %patch29 -p1 -b .translation-bengali-india
 %patch30 -p1 -b .translation-bengali
+%patch31 -p1 -b .volume-busy
+%patch32 -p1 -b .bookmark-rename
+%patch33 -p1 -b .xdg-refresh
+%patch34 -p1 -b .saved-geometry
+%patch35 -p1 -b .saved-maximized
+%patch36 -p1 -b .gconf-type
+%patch37 -p1 -b .gconf-default
+%patch38 -p1 -b .peek-display-name
+%patch39 -p1 -b .dbus-deadlock
+%patch40 -p1 -b .cleanup-pathbar
+
 
 %build
 
@@ -295,6 +338,19 @@ fi
 
 
 %changelog
+* Thu Jul 28 2011 Tomas Bzatek <tbzatek@redhat.com> - 2.28.4-18
+- Cleanup non-existent folders on pathbar (#690147)
+
+* Fri Jan 28 2011 Tomas Bzatek <tbzatek@redhat.com> - 2.28.4-17
+- Fix bookmark renaming from browser Places sidebar (#636881)
+- Refresh desktop location after xdg-dirs change (#661589)
+- Fix saving window geometry (#654091)
+- Prevent a crash when deleting files (#652607)
+- Prevent deadlock on recursive dbus sync calls (#666086)
+
+* Wed Jan  5 2011 Tomas Bzatek <tbzatek@redhat.com> - 2.28.4-16
+- Fix "Untitled window" appearing on taskbar on unmount (#616774)
+
 * Tue Jul 28 2010 Tomas Bzatek <tbzatek@redhat.com> - 2.28.4-15
 - Fix crash caused by wrong translations (bn_IN, gu_IN) (#578086)
 
