@@ -8,7 +8,7 @@
 
 Name:           nautilus
 Version:        3.22.3
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        File manager for GNOME
 
 License:        GPLv2+
@@ -18,6 +18,7 @@ Source0:        https://download.gnome.org/sources/%{name}/3.22/%{name}-%{versio
 # Don't use gnome-autoar which we don't currently have in RHEL 7.4
 Patch0:         0001-general-remove-gnome-autoar.patch
 Patch1:         0001-translation-Add-Japanese.patch
+Patch2:         0001-mime-actions-use-file-metadata-for-trusting-desktop-.patch
 
 BuildRequires:  pkgconfig(exempi-2.0) >= %{exempi_version}
 BuildRequires:  pkgconfig(glib-2.0) >= %{glib2_version}
@@ -80,6 +81,7 @@ for developing nautilus extensions.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 # For patch0
@@ -161,6 +163,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas >&/dev/null || :
 %doc %{_datadir}/gtk-doc/html/libnautilus-extension/
 
 %changelog
+* Thu Nov 02 2017 Carlos Soriano <csoriano@redhat.com> 3.22.3-4
+- Fix desktop files security issue (upstream bugzilla.gnome.org/777991)
+ Resolves: #1490949
+
 * Mon May 29 2017 Carlos Soriano <csoriano@redhat.com> 3.22.3-3
 - Add Japanese translation
  Resolves: #1382632
