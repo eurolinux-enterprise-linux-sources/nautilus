@@ -1,47 +1,50 @@
-From 889ca37501afaca5945f41fcd67bd9f0a4b6c19d Mon Sep 17 00:00:00 2001
+From c5fbd2427753add9f05cc87d0f25789cce37b2e2 Mon Sep 17 00:00:00 2001
 From: Carlos Soriano <csoriano@gnome.org>
-Date: Fri, 3 Mar 2017 19:52:06 +0100
-Subject: [PATCH] general: remove gnome-autoar
+Date: Wed, 6 Jun 2018 14:59:39 +0200
+Subject: [PATCH] Remove autoar
 
 ---
- configure.ac                              |   2 -
- po/POTFILES.in                            |   2 -
- src/Makefile.am                           |   2 -
- src/nautilus-compress-dialog-controller.c | 339 --------------
- src/nautilus-compress-dialog-controller.h |  36 --
- src/nautilus-file-operations.c            | 753 ------------------------------
- src/nautilus-file-operations.h            |  16 -
- src/nautilus-file-undo-operations.c       | 319 -------------
- src/nautilus-file-undo-operations.h       |  58 ---
- src/nautilus-file.c                       |  38 +-
- src/nautilus-files-view.c                 | 616 +-----------------------
- src/nautilus-mime-actions.c               |  23 +-
- 12 files changed, 36 insertions(+), 2168 deletions(-)
+ meson.build                                  |   2 -
+ po/POTFILES.in                               |   4 +-
+ src/meson.build                              |   5 +-
+ src/nautilus-compress-dialog-controller.c    | 339 --------
+ src/nautilus-compress-dialog-controller.h    |  36 -
+ src/nautilus-file-operations.c               | 857 -------------------
+ src/nautilus-file-operations.h               |  14 -
+ src/nautilus-file-undo-operations.c          | 320 -------
+ src/nautilus-file-undo-operations.h          |  58 --
+ src/nautilus-file.c                          |  38 +-
+ src/nautilus-files-view.c                    | 636 +-------------
+ src/nautilus-mime-actions.c                  |  28 -
+ src/resources/nautilus.gresource.xml         |   1 -
+ src/resources/ui/nautilus-compress-dialog.ui | 186 ----
+ 14 files changed, 37 insertions(+), 2487 deletions(-)
  delete mode 100644 src/nautilus-compress-dialog-controller.c
  delete mode 100644 src/nautilus-compress-dialog-controller.h
+ delete mode 100644 src/resources/ui/nautilus-compress-dialog.ui
 
-diff --git a/configure.ac b/configure.ac
-index 83c7c7d84..acd095bb9 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -11,7 +11,6 @@ m4_define(exif_minver,                 0.6.20)
- m4_define(exempi_minver,               2.1.0)
- m4_define(notify_minver,               0.7.0)
- m4_define(schemas_minver,              3.8.0)
--m4_define(autoar_minver,               0.1)
+diff --git a/meson.build b/meson.build
+index 6256193cc..7a450292d 100644
+--- a/meson.build
++++ b/meson.build
+@@ -29,7 +29,6 @@ exif_ver = '>=0.6.20'
+ exempi_ver = '>=2.1.0'
+ notify_ver = '0.7.0'
+ schemas_ver = '>=3.8.0'
+-autoar_ver = '>=0.2.1'
+ selinux_ver = '>=2.0'
  
- dnl 1. If the library code has changed at all since last release, then increment revision.
- dnl 2. If any interfaces have been added, then increment current and set revision to 0.
-@@ -269,7 +268,6 @@ dnl base libs
- PKG_CHECK_MODULES(BASE, [
- 	gtk+-3.0 >= gtk_minver
- 	glib-2.0 >= glib_minver
--        gnome-autoar-0 >= autoar_minver
- ])
+ cc = meson.get_compiler ('c')
+@@ -39,7 +38,6 @@ i18n = import ('i18n')
  
- dnl common libs (eel, nautilus)
+ glib = dependency ('glib-2.0', version: glib_ver)
+ gtk = dependency ('gtk+-3.0', version: gtk_ver)
+-autoar = dependency ('gnome-autoar-0', version: autoar_ver)
+ 
+ gail = dependency ('gail-3.0')
+ gnome_desktop = dependency ('gnome-desktop-3.0', version: gnome_desktop_ver)
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index 8647562f0..6530f6ed4 100644
+index 277a7ff0a..fbc896866 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
 @@ -32,7 +32,6 @@ src/nautilus-canvas-view-container.c
@@ -60,19 +63,41 @@ index 8647562f0..6530f6ed4 100644
  src/resources/ui/nautilus-create-folder-dialog.ui
  src/resources/ui/nautilus-files-view-context-menus.ui
  src/resources/ui/nautilus-folder-is-empty.ui
-diff --git a/src/Makefile.am b/src/Makefile.am
-index 562af23f8..2ece291bd 100644
---- a/src/Makefile.am
-+++ b/src/Makefile.am
-@@ -257,8 +257,6 @@ nautilus_no_main_sources = \
- 	nautilus-rename-file-popover-controller.h \
- 	nautilus-new-folder-dialog-controller.c \
- 	nautilus-new-folder-dialog-controller.h \
--	nautilus-compress-dialog-controller.c \
--	nautilus-compress-dialog-controller.h \
- 	nautilus-operations-ui-manager.c \
- 	nautilus-operations-ui-manager.h \
- 	nautilus-file-operations.c \
+@@ -100,4 +98,4 @@ src/resources/ui/nautilus-window.ui
+ src/gtk/nautilusgtkplacesview.c
+ src/gtk/nautilusgtkplacesviewrow.c
+ src/gtk/nautilusgtkplacesviewrow.ui
+-src/gtk/nautilusgtkplacesview.ui
++src/gtk/nautilusgtkplacesview.ui
+\ No newline at end of file
+diff --git a/src/meson.build b/src/meson.build
+index cc08345d8..e83190d25 100644
+--- a/src/meson.build
++++ b/src/meson.build
+@@ -176,8 +176,6 @@ libnautilus_sources = [
+     'nautilus-rename-file-popover-controller.h',
+     'nautilus-new-folder-dialog-controller.c',
+     'nautilus-new-folder-dialog-controller.h',
+-    'nautilus-compress-dialog-controller.c',
+-    'nautilus-compress-dialog-controller.h',
+     'nautilus-operations-ui-manager.c',
+     'nautilus-operations-ui-manager.h',
+     'nautilus-file-operations.c',
+@@ -264,7 +262,6 @@ libnautilus_sources = [
+ 
+ nautilus_deps = [glib,
+                  gtk,
+-                 autoar,
+                  xml,
+                  gsettings_desktop_schemas,
+                  libgd_dep,
+@@ -312,4 +309,4 @@ test ('nautilus', nautilus, args: ['--check', '--g-fatal-warnings'])
+ nautilus_autorun_software = executable ('nautilus-autorun-software',
+                                         'nautilus-autorun-software.c',
+                                         dependencies: libnautilus_dep,
+-                                        install: true)
++                                        install: true)
+\ No newline at end of file
 diff --git a/src/nautilus-compress-dialog-controller.c b/src/nautilus-compress-dialog-controller.c
 deleted file mode 100644
 index 3937181a8..000000000
@@ -461,7 +486,7 @@ index bb89413f1..000000000
 -
 -#endif /* NAUTILUS_COMPRESS_DIALOG_CONTROLLER_H */
 diff --git a/src/nautilus-file-operations.c b/src/nautilus-file-operations.c
-index fd35faf3f..728a80df8 100644
+index 546acf835..5bcb4e357 100644
 --- a/src/nautilus-file-operations.c
 +++ b/src/nautilus-file-operations.c
 @@ -160,7 +160,6 @@ typedef enum
@@ -513,31 +538,31 @@ index fd35faf3f..728a80df8 100644
  #define SECONDS_NEEDED_FOR_RELIABLE_TRANSFER_RATE 8
  #define NSEC_PER_MICROSEC 1000
  #define PROGRESS_NOTIFY_INTERVAL 100 * NSEC_PER_MICROSEC
-@@ -3083,12 +3048,6 @@ report_preparing_count_progress (CommonJob  *job,
-                        source_info->num_files);
-             }
-             break;
+@@ -3037,12 +3002,6 @@ report_preparing_count_progress (CommonJob  *job,
+                                  source_info->num_files);
+         }
+         break;
 -
 -        case OP_KIND_COMPRESS:
--            s = f (ngettext ("Preparing to compress %'d file",
--                             "Preparing to compress %'d files",
--                             source_info->num_files),
--                   source_info->num_files);
+-            s = g_strdup_printf (ngettext ("Preparing to compress %'d file",
+-                                           "Preparing to compress %'d files",
+-                                           source_info->num_files),
+-                                 source_info->num_files);
      }
  
      nautilus_progress_info_take_details (job->progress, s);
-@@ -3135,9 +3094,6 @@ get_scan_primary (OpKind kind)
-             {
-                 return f (_("Error while moving files to trash."));
-             }
+@@ -3089,9 +3048,6 @@ get_scan_primary (OpKind kind)
+         {
+             return g_strdup (_("Error while moving files to trash."));
+         }
 -
 -        case OP_KIND_COMPRESS:
--            return f (_("Error while compressing files."));
+-            return g_strdup (_("Error while compressing files."));
      }
  }
  
-@@ -8141,715 +8097,6 @@ nautilus_file_mark_desktop_file_trusted (GFile              *file,
-     g_object_unref (task);
+@@ -8034,819 +7990,6 @@ nautilus_file_mark_desktop_file_executable (GFile              *file,
+     g_task_run_in_thread (task, mark_desktop_file_executable_task_thread_func);
  }
  
 -static void
@@ -611,11 +636,16 @@ index fd35faf3f..728a80df8 100644
 -    gdouble archive_decompress_progress;
 -    guint64 job_completed_size;
 -    gdouble job_progress;
+-    g_autofree gchar *basename = NULL;
+-    g_autofree gchar *formatted_size_job_completed_size = NULL;
+-    g_autofree gchar *formatted_size_total_compressed_size = NULL;
 -
 -    source_file = autoar_extractor_get_source_file (extractor);
 -
+-    basename = get_basename (source_file);
 -    nautilus_progress_info_take_status (common->progress,
--                                        f (_("Extracting “%B”"), source_file));
+-                                        g_strdup_printf (_("Extracting “%s”"),
+-                                                         basename));
 -
 -    archive_total_decompressed_size = autoar_extractor_get_total_size (extractor);
 -
@@ -648,30 +678,39 @@ index fd35faf3f..728a80df8 100644
 -                         transfer_rate;
 -    }
 -
+-    formatted_size_job_completed_size = g_format_size (job_completed_size);
+-    formatted_size_total_compressed_size = g_format_size (extract_job->total_compressed_size);
 -    if (elapsed < SECONDS_NEEDED_FOR_RELIABLE_TRANSFER_RATE ||
 -        transfer_rate == 0)
 -    {
--        /* To translators: %S will expand to a size like "2 bytes" or
+-        /* To translators: %s will expand to a size like "2 bytes" or
 -         * "3 MB", so something like "4 kb / 4 MB"
 -         */
--        details = f (_("%S / %S"), job_completed_size, extract_job->total_compressed_size);
+-        details = g_strdup_printf (_("%s / %s"), formatted_size_job_completed_size,
+-                                   formatted_size_total_compressed_size);
 -    }
 -    else
 -    {
--        /* To translators: %S will expand to a size like "2 bytes" or
--         * "3 MB", %T to a time duration like "2 minutes". So the whole
+-        g_autofree gchar *formatted_time = NULL;
+-        g_autofree gchar *formatted_size_transfer_rate = NULL;
+-
+-        formatted_time = get_formatted_time (remaining_time);
+-        formatted_size_transfer_rate = g_format_size ((goffset) transfer_rate);
+-        /* To translators: %s will expand to a size like "2 bytes" or
+-         * "3 MB", %s to a time duration like "2 minutes". So the whole
 -         * thing will be something like
 -         * "2 kb / 4 MB -- 2 hours left (4kb/sec)"
 -         *
 -         * The singular/plural form will be used depending on the
--         * remaining time (i.e. the %T argument).
+-         * remaining time (i.e. the %s argument).
 -         */
--        details = f (ngettext ("%S / %S \xE2\x80\x94 %T left (%S/sec)",
--                               "%S / %S \xE2\x80\x94 %T left (%S/sec)",
--                               seconds_count_format_time_units (remaining_time)),
--                     job_completed_size, extract_job->total_compressed_size,
--                     remaining_time,
--                     (goffset) transfer_rate);
+-        details = g_strdup_printf (ngettext ("%s / %s \xE2\x80\x94 %s left (%s/sec)",
+-                                             "%s / %s \xE2\x80\x94 %s left (%s/sec)",
+-                                             seconds_count_format_time_units (remaining_time)),
+-                                             formatted_size_job_completed_size,
+-                                             formatted_size_total_compressed_size,
+-                                             formatted_time,
+-                                             formatted_size_transfer_rate);
 -    }
 -
 -    nautilus_progress_info_take_details (common->progress, details);
@@ -695,6 +734,7 @@ index fd35faf3f..728a80df8 100644
 -    ExtractJob *extract_job = user_data;
 -    GFile *source_file;
 -    gint response_id;
+-    g_autofree gchar *basename = NULL;
 -
 -    source_file = autoar_extractor_get_source_file (extractor);
 -
@@ -706,13 +746,14 @@ index fd35faf3f..728a80df8 100644
 -        return;
 -    }
 -
+-    basename = get_basename (source_file);
 -    nautilus_progress_info_take_status (extract_job->common.progress,
--                                        f (_("Error extracting “%B”"),
--                                           source_file));
+-                                        g_strdup_printf (_("Error extracting “%s”"),
+-                                                         basename));
 -
 -    response_id = run_warning ((CommonJob *) extract_job,
--                               f (_("There was an error while extracting “%B”."),
--                                  source_file),
+-                               g_strdup_printf (_("There was an error while extracting “%s”."),
+-                                                basename),
 -                               g_strdup (error->message),
 -                               NULL,
 -                               FALSE,
@@ -739,38 +780,89 @@ index fd35faf3f..728a80df8 100644
 -}
 -
 -static void
+-extract_job_on_scanned (AutoarExtractor *extractor,
+-                        guint            total_files,
+-                        gpointer         user_data)
+-{
+-    guint64 total_size;
+-    ExtractJob *extract_job;
+-    GFile *source_file;
+-    g_autofree gchar *basename;
+-    GFileInfo *fsinfo;
+-    guint64 free_size;
+-
+-    extract_job = user_data;
+-    total_size = autoar_extractor_get_total_size (extractor);
+-    source_file = autoar_extractor_get_source_file (extractor);
+-    basename = get_basename (source_file);
+-
+-    fsinfo = g_file_query_filesystem_info (source_file,
+-                                           G_FILE_ATTRIBUTE_FILESYSTEM_FREE ","
+-                                           G_FILE_ATTRIBUTE_FILESYSTEM_READONLY,
+-                                           extract_job->common.cancellable,
+-                                           NULL);
+-    free_size = g_file_info_get_attribute_uint64 (fsinfo,
+-                                                  G_FILE_ATTRIBUTE_FILESYSTEM_FREE);
+-
+-    /* FIXME: G_MAXUINT64 is the value used by autoar when the file size cannot
+-     * be determined. Ideally an API should be used instead.
+-     */
+-    if (total_size != G_MAXUINT64 && total_size > free_size )
+-    {
+-      nautilus_progress_info_take_status (extract_job->common.progress,
+-                                          g_strdup_printf (_("Error extracting “%s”"),
+-                                                           basename));
+-      run_error (&extract_job->common,
+-                 g_strdup_printf (_("Not enough free space to extract %s"),basename),
+-                 NULL,
+-                 NULL,
+-                 FALSE,
+-                 CANCEL,
+-                 NULL);
+-
+-      abort_job ((CommonJob *) extract_job);
+-    }
+-}
+-
+-static void
 -report_extract_final_progress (ExtractJob *extract_job,
 -                               gint        total_files)
 -{
 -    char *status;
+-    g_autofree gchar *basename_dest = NULL;
+-    g_autofree gchar *formatted_size = NULL;
 -
 -    nautilus_progress_info_set_destination (extract_job->common.progress,
 -                                            extract_job->destination_directory);
+-    basename_dest = get_basename (extract_job->destination_directory);
 -
 -    if (total_files == 1)
 -    {
 -        GFile *source_file;
+-        g_autofree gchar * basename = NULL;
 -
 -        source_file = G_FILE (extract_job->source_files->data);
--        status = f (_("Extracted “%B” to “%B”"),
--                    source_file,
--                    extract_job->destination_directory);
+-        basename = get_basename (source_file);
+-        status = g_strdup_printf (_("Extracted “%s” to “%s”"),
+-                                  basename,
+-                                  basename_dest);
 -    }
 -    else
 -    {
--        status = f (ngettext ("Extracted %'d file to “%B”",
--                              "Extracted %'d files to “%B”",
--                              total_files),
--                    total_files,
--                    extract_job->destination_directory);
+-        status = g_strdup_printf (ngettext ("Extracted %'d file to “%s”",
+-                                            "Extracted %'d files to “%s”",
+-                                            total_files),
+-                                  total_files,
+-                                  basename_dest);
 -    }
 -
 -    nautilus_progress_info_take_status (extract_job->common.progress,
 -                                        status);
+-    formatted_size = g_format_size (extract_job->total_compressed_size);
 -    nautilus_progress_info_take_details (extract_job->common.progress,
--                                         f (_("%S / %S"),
--                                            extract_job->total_compressed_size,
--                                            extract_job->total_compressed_size));
+-                                         g_strdup_printf (_("%s / %s"),
+-                                                          formatted_size,
+-                                                          formatted_size));
 -}
 -
 -static void
@@ -832,7 +924,9 @@ index fd35faf3f..728a80df8 100644
 -
 -        autoar_extractor_set_notify_interval (extractor,
 -                                              PROGRESS_NOTIFY_INTERVAL);
--
+-        g_signal_connect (extractor, "scanned",
+-                          G_CALLBACK (extract_job_on_scanned),
+-                          extract_job);
 -        g_signal_connect (extractor, "error",
 -                          G_CALLBACK (extract_job_on_error),
 -                          extract_job);
@@ -967,24 +1061,27 @@ index fd35faf3f..728a80df8 100644
 -    double elapsed;
 -    double transfer_rate;
 -    int remaining_time;
+-    g_autofree gchar *basename_output_file = NULL;
 -
 -    files_left = compress_job->total_files - completed_files;
--
+-    basename_output_file = get_basename (compress_job->output_file);
 -    if (compress_job->total_files == 1)
 -    {
--        status = f (_("Compressing “%B” into “%B”"),
--                    G_FILE (compress_job->source_files->data),
--                    compress_job->output_file);
+-        g_autofree gchar *basename_data = NULL;
+-
+-        basename_data = get_basename (G_FILE (compress_job->source_files->data));
+-        status = g_strdup_printf (_("Compressing “%s” into “%s”"),
+-                                  basename_data,
+-                                  basename_output_file);
 -    }
 -    else
 -    {
--        status = f (ngettext ("Compressing %'d file into “%B”",
--                              "Compressing %'d files into “%B”",
--                              compress_job->total_files),
--                    compress_job->total_files,
--                    compress_job->output_file);
+-        status = g_strdup_printf (ngettext ("Compressing %'d file into “%s”",
+-                                            "Compressing %'d files into “%s”",
+-                                            compress_job->total_files),
+-                                  compress_job->total_files,
+-                                  basename_output_file);
 -    }
--
 -    nautilus_progress_info_take_status (common->progress, status);
 -
 -    elapsed = g_timer_elapsed (common->time, NULL);
@@ -1011,65 +1108,88 @@ index fd35faf3f..728a80df8 100644
 -    {
 -        if (compress_job->total_files == 1)
 -        {
--            /* To translators: %S will expand to a size like "2 bytes" or "3 MB", so something like "4 kb / 4 MB" */
--            details = f (_("%S / %S"), completed_size, compress_job->total_size);
+-            g_autofree gchar *formatted_size_completed_size = NULL;
+-            g_autofree gchar *formatted_size_total_size = NULL;
+-
+-            formatted_size_completed_size = g_format_size (completed_size);
+-            formatted_size_total_size = g_format_size (compress_job->total_size);
+-            /* To translators: %s will expand to a size like "2 bytes" or "3 MB", so something like "4 kb / 4 MB" */
+-            details = g_strdup_printf (_("%s / %s"), formatted_size_completed_size,
+-                                       formatted_size_total_size);
 -        }
 -        else
 -        {
--            details = f (_("%'d / %'d"),
--                         files_left > 0 ? completed_files + 1 : completed_files,
--                         compress_job->total_files);
+-            details = g_strdup_printf (_("%'d / %'d"),
+-                                       files_left > 0 ? completed_files + 1 : completed_files,
+-                                       compress_job->total_files);
 -        }
 -    }
 -    else
 -    {
 -        if (compress_job->total_files == 1)
 -        {
+-            g_autofree gchar *formatted_size_completed_size = NULL;
+-            g_autofree gchar *formatted_size_total_size = NULL;
+-
+-            formatted_size_completed_size = g_format_size (completed_size);
+-            formatted_size_total_size = g_format_size (compress_job->total_size);
+-
 -            if (files_left > 0)
 -            {
--                /* To translators: %S will expand to a size like "2 bytes" or "3 MB", %T to a time duration like
+-                g_autofree gchar *formatted_time = NULL;
+-                g_autofree gchar *formatted_size_transfer_rate = NULL;
+-
+-                formatted_time = get_formatted_time (remaining_time);
+-                formatted_size_transfer_rate = g_format_size ((goffset) transfer_rate);
+-                /* To translators: %s will expand to a size like "2 bytes" or "3 MB", %s to a time duration like
 -                 * "2 minutes". So the whole thing will be something like "2 kb / 4 MB -- 2 hours left (4kb/sec)"
 -                 *
--                 * The singular/plural form will be used depending on the remaining time (i.e. the %T argument).
+-                 * The singular/plural form will be used depending on the remaining time (i.e. the %s argument).
 -                 */
--                details = f (ngettext ("%S / %S \xE2\x80\x94 %T left (%S/sec)",
--                                       "%S / %S \xE2\x80\x94 %T left (%S/sec)",
--                                       seconds_count_format_time_units (remaining_time)),
--                             completed_size, compress_job->total_size,
--                             remaining_time,
--                             (goffset) transfer_rate);
+-                details = g_strdup_printf (ngettext ("%s / %s \xE2\x80\x94 %s left (%s/sec)",
+-                                                     "%s / %s \xE2\x80\x94 %s left (%s/sec)",
+-                                                     seconds_count_format_time_units (remaining_time)),
+-                                           formatted_size_completed_size,
+-                                           formatted_size_total_size,
+-                                           formatted_time,
+-                                           formatted_size_transfer_rate);
 -            }
 -            else
 -            {
--                /* To translators: %S will expand to a size like "2 bytes" or "3 MB". */
--                details = f (_("%S / %S"),
--                             completed_size,
--                             compress_job->total_size);
+-                /* To translators: %s will expand to a size like "2 bytes" or "3 MB". */
+-                details = g_strdup_printf (_("%s / %s"),
+-                                           formatted_size_completed_size,
+-                                           formatted_size_total_size);
 -            }
 -        }
 -        else
 -        {
 -            if (files_left > 0)
 -            {
--                /* To translators: %T will expand to a time duration like "2 minutes".
+-                g_autofree gchar *formatted_time = NULL;
+-                g_autofree gchar *formatted_size = NULL;
+-
+-                formatted_time = get_formatted_time (remaining_time);
+-                formatted_size = g_format_size ((goffset) transfer_rate);
+-                /* To translators: %s will expand to a time duration like "2 minutes".
 -                 * So the whole thing will be something like "1 / 5 -- 2 hours left (4kb/sec)"
 -                 *
--                 * The singular/plural form will be used depending on the remaining time (i.e. the %T argument).
+-                 * The singular/plural form will be used depending on the remaining time (i.e. the %s argument).
 -                 */
--                details = f (ngettext ("%'d / %'d \xE2\x80\x94 %T left (%S/sec)",
--                                       "%'d / %'d \xE2\x80\x94 %T left (%S/sec)",
--                                       seconds_count_format_time_units (remaining_time)),
--                             completed_files + 1, compress_job->total_files,
--                             remaining_time,
--                             (goffset) transfer_rate);
+-                details = g_strdup_printf (ngettext ("%'d / %'d \xE2\x80\x94 %s left (%s/sec)",
+-                                                     "%'d / %'d \xE2\x80\x94 %s left (%s/sec)",
+-                                                     seconds_count_format_time_units (remaining_time)),
+-                                           completed_files + 1, compress_job->total_files,
+-                                           formatted_time,
+-                                           formatted_size);
 -            }
 -            else
 -            {
 -                /* To translators: %'d is the number of files completed for the operation,
 -                 * so it will be something like 2/14. */
--                details = f (_("%'d / %'d"),
--                             completed_files,
--                             compress_job->total_files);
+-                details = g_strdup_printf (_("%'d / %'d"),
+-                                           completed_files,
+-                                           compress_job->total_files);
 -            }
 -        }
 -    }
@@ -1096,22 +1216,26 @@ index fd35faf3f..728a80df8 100644
 -{
 -    CompressJob *compress_job = user_data;
 -    char *status;
+-    g_autofree gchar *basename_output_file = NULL;
 -
+-    basename_output_file = get_basename (compress_job->output_file);
 -    if (compress_job->total_files == 1)
 -    {
--        status = f (_("Error compressing “%B” into “%B”"),
--                    G_FILE (compress_job->source_files->data),
--                    compress_job->output_file);
+-        g_autofree gchar *basename_data = NULL;
+-
+-        basename_data = get_basename (G_FILE (compress_job->source_files->data));
+-        status = g_strdup_printf (_("Error compressing “%s” into “%s”"),
+-                                  basename_data,
+-                                  basename_output_file);
 -    }
 -    else
 -    {
--        status = f (ngettext ("Error compressing %'d file into “%B”",
--                              "Error compressing %'d files into “%B”",
--                              compress_job->total_files),
--                    compress_job->total_files,
--                    compress_job->output_file);
+-        status = g_strdup_printf (ngettext ("Error compressing %'d file into “%s”",
+-                                            "Error compressing %'d files into “%s”",
+-                                            compress_job->total_files),
+-                                  compress_job->total_files,
+-                                  basename_output_file);
 -    }
--
 -    nautilus_progress_info_take_status (compress_job->common.progress,
 -                                        status);
 -
@@ -1133,20 +1257,25 @@ index fd35faf3f..728a80df8 100644
 -    CompressJob *compress_job = user_data;
 -    g_autoptr (GFile) destination_directory = NULL;
 -    char *status;
+-    g_autofree gchar *basename_output_file = NULL;
 -
+-    basename_output_file = get_basename (compress_job->output_file);
 -    if (compress_job->total_files == 1)
 -    {
--        status = f (_("Compressed “%B” into “%B”"),
--                    G_FILE (compress_job->source_files->data),
--                    compress_job->output_file);
+-        g_autofree gchar *basename_data = NULL;
+-
+-        basename_data = get_basename (G_FILE (compress_job->source_files->data));
+-        status = g_strdup_printf (_("Compressed “%s” into “%s”"),
+-                                  basename_data,
+-                                  basename_output_file);
 -    }
 -    else
 -    {
--        status = f (ngettext ("Compressed %'d file into “%B”",
--                              "Compressed %'d files into “%B”",
--                              compress_job->total_files),
--                    compress_job->total_files,
--                    compress_job->output_file);
+-        status = g_strdup_printf (ngettext ("Compressed %'d file into “%s”",
+-                                            "Compressed %'d files into “%s”",
+-                                            compress_job->total_files),
+-                                  compress_job->total_files,
+-                                  basename_output_file);
 -    }
 -
 -    nautilus_progress_info_take_status (compress_job->common.progress,
@@ -1253,7 +1382,7 @@ index fd35faf3f..728a80df8 100644
  
  void
 diff --git a/src/nautilus-file-operations.h b/src/nautilus-file-operations.h
-index 31b782dba..7b8e7ad68 100644
+index a479ee6e0..4d3c4547e 100644
 --- a/src/nautilus-file-operations.h
 +++ b/src/nautilus-file-operations.h
 @@ -26,7 +26,6 @@
@@ -1264,19 +1393,10 @@ index 31b782dba..7b8e7ad68 100644
  
  
  #define SECONDS_NEEDED_FOR_APROXIMATE_TRANSFER_RATE 1
-@@ -46,8 +45,6 @@ typedef void (* NautilusMountCallback)     (GVolume    *volume,
- 					    gboolean    success,
- 					    GObject    *callback_data_object);
- typedef void (* NautilusUnmountCallback)   (gpointer    callback_data);
--typedef void (* NautilusExtractCallback)   (GList    *outputs,
--                                            gpointer  callback_data);
- 
- /* FIXME: int copy_action should be an enum */
- 
-@@ -151,18 +148,5 @@ void nautilus_file_mark_desktop_file_trusted (GFile           *file,
- 					      gboolean          interactive,
- 					      NautilusOpCallback done_callback,
- 					      gpointer          done_callback_data);
+@@ -151,18 +150,5 @@ void nautilus_file_mark_desktop_file_executable (GFile           *file,
+                                                  gboolean          interactive,
+                                                  NautilusOpCallback done_callback,
+                                                  gpointer          done_callback_data);
 -void nautilus_file_operations_extract_files (GList                   *files,
 -                                             GFile                   *destination_directory,
 -                                             GtkWindow               *parent_window,
@@ -1293,13 +1413,14 @@ index 31b782dba..7b8e7ad68 100644
  
  #endif /* NAUTILUS_FILE_OPERATIONS_H */
 diff --git a/src/nautilus-file-undo-operations.c b/src/nautilus-file-undo-operations.c
-index 8005b92b6..2223d91f5 100644
+index e833d0578..956cd9b55 100644
 --- a/src/nautilus-file-undo-operations.c
 +++ b/src/nautilus-file-undo-operations.c
-@@ -2037,322 +2037,3 @@ nautilus_file_undo_info_ownership_new (NautilusFileUndoOp  op_type,
+@@ -2032,323 +2032,3 @@ nautilus_file_undo_info_ownership_new (NautilusFileUndoOp  op_type,
+ 
      return NAUTILUS_FILE_UNDO_INFO (retval);
  }
- 
+-
 -/* extract */
 -G_DEFINE_TYPE (NautilusFileUndoInfoExtract, nautilus_file_undo_info_extract, NAUTILUS_TYPE_FILE_UNDO_INFO)
 -
@@ -1349,7 +1470,7 @@ index 8005b92b6..2223d91f5 100644
 -        output = self->priv->outputs->data;
 -        name = g_file_get_parse_name (output);
 -
--        *undo_description = g_strdup_printf (_("Delete '%s'"), name);
+-        *undo_description = g_strdup_printf (_("Delete “%s”"), name);
 -    }
 -    else
 -    {
@@ -1367,7 +1488,7 @@ index 8005b92b6..2223d91f5 100644
 -        source = self->priv->sources->data;
 -        name = g_file_get_parse_name (source);
 -
--        *redo_description = g_strdup_printf (_("Extract '%s'"), name);
+-        *redo_description = g_strdup_printf (_("Extract “%s”"), name);
 -    }
 -    else
 -    {
@@ -1511,7 +1632,7 @@ index 8005b92b6..2223d91f5 100644
 -    gint sources_count;
 -
 -    output_name = g_file_get_parse_name (self->priv->output);
--    *undo_description = g_strdup_printf (_("Delete '%s'"), output_name);
+-    *undo_description = g_strdup_printf (_("Delete “%s”"), output_name);
 -
 -    sources_count = g_list_length (self->priv->sources);
 -    if (sources_count == 1)
@@ -1522,7 +1643,7 @@ index 8005b92b6..2223d91f5 100644
 -        source = self->priv->sources->data;
 -        source_name = g_file_get_parse_name (source);
 -
--        *redo_description = g_strdup_printf (_("Compress '%s'"), source_name);
+-        *redo_description = g_strdup_printf (_("Compress “%s”"), source_name);
 -    }
 -    else
 -    {
@@ -1701,7 +1822,7 @@ index 630443f10..8a153c32d 100644
 -
  #endif /* __NAUTILUS_FILE_UNDO_OPERATIONS_H__ */
 diff --git a/src/nautilus-file.c b/src/nautilus-file.c
-index bb7948da0..d7df1d9fc 100644
+index 1657edcde..cff660f1f 100644
 --- a/src/nautilus-file.c
 +++ b/src/nautilus-file.c
 @@ -51,7 +51,6 @@
@@ -1712,7 +1833,7 @@ index bb7948da0..d7df1d9fc 100644
  #include <gdesktop-enums.h>
  #include <libnautilus-extension/nautilus-file-info.h>
  #include <libnautilus-extension/nautilus-extension-private.h>
-@@ -8169,11 +8168,38 @@ real_is_special_link (NautilusFile *file)
+@@ -8262,11 +8261,38 @@ real_is_special_link (NautilusFile *file)
  gboolean
  nautilus_file_is_archive (NautilusFile *file)
  {
@@ -1757,10 +1878,10 @@ index bb7948da0..d7df1d9fc 100644
  
  
 diff --git a/src/nautilus-files-view.c b/src/nautilus-files-view.c
-index 721682f4b..7caee9b5b 100644
+index 8784f63f8..90fcca9d6 100644
 --- a/src/nautilus-files-view.c
 +++ b/src/nautilus-files-view.c
-@@ -58,7 +58,6 @@
+@@ -48,7 +48,6 @@
  #include <glib/gi18n.h>
  #include <glib/gstdio.h>
  #include <gio/gio.h>
@@ -1768,7 +1889,7 @@ index 721682f4b..7caee9b5b 100644
  #include <math.h>
  #include <string.h>
  #include <sys/types.h>
-@@ -85,7 +84,6 @@
+@@ -75,7 +74,6 @@
  #include "nautilus-file-name-widget-controller.h"
  #include "nautilus-rename-file-popover-controller.h"
  #include "nautilus-new-folder-dialog-controller.h"
@@ -1776,7 +1897,7 @@ index 721682f4b..7caee9b5b 100644
  #include "nautilus-global-preferences.h"
  #include "nautilus-link.h"
  #include "nautilus-metadata.h"
-@@ -182,7 +180,6 @@ struct NautilusFilesViewDetails
+@@ -171,7 +169,6 @@ typedef struct
  
      NautilusRenameFilePopoverController *rename_file_controller;
      NautilusNewFolderDialogController *new_folder_controller;
@@ -1784,7 +1905,7 @@ index 721682f4b..7caee9b5b 100644
  
      gboolean supports_zooming;
  
-@@ -319,12 +316,6 @@ static void     nautilus_files_view_select_file (NautilusFilesView *view,
+@@ -310,12 +307,6 @@ static void     nautilus_files_view_select_file (NautilusFilesView *view,
  
  static void     update_templates_directory (NautilusFilesView *view);
  
@@ -1797,31 +1918,36 @@ index 721682f4b..7caee9b5b 100644
  static void     nautilus_files_view_check_empty_states (NautilusFilesView *view);
  
  static gboolean nautilus_files_view_is_searching (NautilusView *view);
-@@ -697,16 +688,6 @@ nautilus_files_view_supports_creating_files (NautilusFilesView *view)
+@@ -749,15 +740,6 @@ nautilus_files_view_supports_creating_files (NautilusFilesView *view)
+            && !showing_recent_directory (view);
  }
  
- static gboolean
+-static gboolean
 -nautilus_files_view_supports_extract_here (NautilusFilesView *view)
 -{
 -    g_return_val_if_fail (NAUTILUS_IS_FILES_VIEW (view), FALSE);
 -
 -    return nautilus_files_view_supports_creating_files (view)
--           && !nautilus_directory_is_remote (view->details->model)
 -           && !nautilus_view_is_searching (NAUTILUS_VIEW (view));
 -}
 -
--static gboolean
+ static gboolean
  nautilus_files_view_is_empty (NautilusFilesView *view)
  {
-     g_return_val_if_fail (NAUTILUS_IS_FILES_VIEW (view), FALSE);
-@@ -1143,44 +1124,17 @@ nautilus_files_view_activate_files (NautilusFilesView       *view,
-                                     NautilusWindowOpenFlags  flags,
+@@ -1209,8 +1191,6 @@ nautilus_files_view_activate_files (NautilusFilesView       *view,
                                      gboolean                 confirm_multiple)
  {
+     NautilusFilesViewPrivate *priv;
 -    GList *files_to_extract;
 -    GList *files_to_activate;
      char *path;
  
+     if (files == NULL)
+@@ -1219,41 +1199,15 @@ nautilus_files_view_activate_files (NautilusFilesView       *view,
+     }
+ 
+     priv = nautilus_files_view_get_instance_private (view);
+-
 -    files_to_extract = nautilus_file_list_filter (files,
 -                                                  &files_to_activate,
 -                                                  (NautilusFileFilterFunc) nautilus_mime_file_extracts,
@@ -1847,7 +1973,7 @@ index 721682f4b..7caee9b5b 100644
 -
      path = get_view_directory (view);
      nautilus_mime_activate_files (nautilus_files_view_get_containing_window (view),
-                                   view->details->slot,
+                                   priv->slot,
 -                                  files_to_activate,
 +                                  files,
                                    path,
@@ -1859,44 +1985,8 @@ index 721682f4b..7caee9b5b 100644
 -    g_list_free (files_to_activate);
  }
  
- static void
-@@ -1190,35 +1144,6 @@ nautilus_files_view_activate_file (NautilusFilesView       *view,
- {
-     char *path;
- 
--    if (nautilus_mime_file_extracts (file))
--    {
--        GList *files = NULL;
--
--        files = g_list_prepend (files, file);
--
--        if (nautilus_files_view_supports_extract_here (view))
--        {
--            g_autoptr (GFile) location = NULL;
--            g_autoptr (GFile) parent = NULL;
--
--            location = nautilus_file_get_location (file);
--            /* Get a parent from a random file. We assume all files has a common parent.
--             * But don't assume the parent is the view location, since that's not the
--             * case in list view when expand-folder setting is set
--             */
--            parent = g_file_get_parent (location);
--            extract_files (view, files, parent);
--        }
--        else
--        {
--            extract_files_to_chosen_location (view, files);
--        }
--
--        g_list_free (files);
--
--        return;
--    }
--
-     path = get_view_directory (view);
-     nautilus_mime_activate_file (nautilus_files_view_get_containing_window (view),
-                                  view->details->slot,
-@@ -1990,215 +1915,6 @@ nautilus_files_view_new_folder_dialog_new (NautilusFilesView *view,
+ void
+@@ -2085,232 +2039,6 @@ nautilus_files_view_new_folder_dialog_new (NautilusFilesView *view,
      nautilus_directory_unref (containing_directory);
  }
  
@@ -1913,6 +2003,7 @@ index 721682f4b..7caee9b5b 100644
 -{
 -    CompressData *data;
 -    NautilusFilesView *view;
+-    NautilusFilesViewPrivate *priv;
 -    NautilusFile *file;
 -
 -    data = user_data;
@@ -1922,6 +2013,8 @@ index 721682f4b..7caee9b5b 100644
 -    {
 -        goto out;
 -    }
+-
+-    priv = nautilus_files_view_get_instance_private (view);
 -
 -    g_signal_handlers_disconnect_by_func (view,
 -                                          G_CALLBACK (track_newly_added_locations),
@@ -1942,7 +2035,7 @@ index 721682f4b..7caee9b5b 100644
 -    }
 -    else
 -    {
--        g_hash_table_insert (view->details->pending_reveal,
+-        g_hash_table_insert (priv->pending_reveal,
 -                             file,
 -                             GUINT_TO_POINTER (TRUE));
 -    }
@@ -1973,10 +2066,12 @@ index 721682f4b..7caee9b5b 100644
 -    g_autoptr (GFile) output = NULL;
 -    g_autoptr (GFile) parent = NULL;
 -    NautilusCompressionFormat compression_format;
+-    NautilusFilesViewPrivate *priv;
 -    AutoarFormat format;
 -    AutoarFilter filter;
 -
 -    view = NAUTILUS_FILES_VIEW (user_data);
+-    priv = nautilus_files_view_get_instance_private (view);
 -
 -    selection = nautilus_files_view_get_selection_for_file_transfer (view);
 -
@@ -2003,7 +2098,7 @@ index 721682f4b..7caee9b5b 100644
 -                               (gpointer *) &data->view);
 -
 -    g_signal_connect_data (view,
--                           "add-file",
+-                           "add-files",
 -                           G_CALLBACK (track_newly_added_locations),
 -                           data->added_locations,
 -                           NULL,
@@ -2048,7 +2143,7 @@ index 721682f4b..7caee9b5b 100644
 -
 -    nautilus_file_list_free (selection);
 -    g_list_free_full (source_files, g_object_unref);
--    g_clear_object (&view->details->compress_controller);
+-    g_clear_object (&priv->compress_controller);
 -}
 -
 -static void
@@ -2056,10 +2151,12 @@ index 721682f4b..7caee9b5b 100644
 -                                         gpointer                           user_data)
 -{
 -    NautilusFilesView *view;
+-    NautilusFilesViewPrivate *priv;
 -
 -    view = NAUTILUS_FILES_VIEW (user_data);
+-    priv = nautilus_files_view_get_instance_private (view);
 -
--    g_clear_object (&view->details->compress_controller);
+-    g_clear_object (&priv->compress_controller);
 -}
 -
 -
@@ -2067,10 +2164,13 @@ index 721682f4b..7caee9b5b 100644
 -nautilus_files_view_compress_dialog_new (NautilusFilesView *view)
 -{
 -    NautilusDirectory *containing_directory;
+-    NautilusFilesViewPrivate *priv;
 -    GList *selection;
 -    g_autofree char *common_prefix = NULL;
 -
--    if (view->details->compress_controller != NULL)
+-    priv = nautilus_files_view_get_instance_private (view);
+-
+-    if (priv->compress_controller != NULL)
 -    {
 -        return;
 -    }
@@ -2085,7 +2185,14 @@ index 721682f4b..7caee9b5b 100644
 -
 -        display_name = nautilus_file_get_display_name (selection->data);
 -
--        common_prefix = eel_filename_strip_extension (display_name);
+-        if (nautilus_file_is_directory (selection->data))
+-        {
+-            common_prefix = g_steal_pointer (&display_name);
+-        }
+-        else
+-        {
+-            common_prefix = eel_filename_strip_extension (display_name);
+-        }
 -    }
 -    else
 -    {
@@ -2093,15 +2200,15 @@ index 721682f4b..7caee9b5b 100644
 -                                                             MIN_COMMON_FILENAME_PREFIX_LENGTH);
 -    }
 -
--    view->details->compress_controller = nautilus_compress_dialog_controller_new (nautilus_files_view_get_containing_window (view),
--                                                                                  containing_directory,
--                                                                                  common_prefix);
+-    priv->compress_controller = nautilus_compress_dialog_controller_new (nautilus_files_view_get_containing_window (view),
+-                                                                         containing_directory,
+-                                                                         common_prefix);
 -
--    g_signal_connect (view->details->compress_controller,
+-    g_signal_connect (priv->compress_controller,
 -                      "name-accepted",
 -                      (GCallback) compress_dialog_controller_on_name_accepted,
 -                      view);
--    g_signal_connect (view->details->compress_controller,
+-    g_signal_connect (priv->compress_controller,
 -                      "cancelled",
 -                      (GCallback) compress_dialog_controller_on_cancelled,
 -                      view);
@@ -2112,15 +2219,15 @@ index 721682f4b..7caee9b5b 100644
  static void
  nautilus_files_view_new_folder (NautilusFilesView *directory_view,
                                  gboolean           with_selection)
-@@ -3061,7 +2777,6 @@ nautilus_files_view_finalize (GObject *object)
-     g_clear_object (&view->details->toolbar_menu_sections->extended_section);
-     g_clear_object (&view->details->rename_file_controller);
-     g_clear_object (&view->details->new_folder_controller);
--    g_clear_object (&view->details->compress_controller);
-     g_free (view->details->toolbar_menu_sections);
+@@ -3236,7 +2964,6 @@ nautilus_files_view_finalize (GObject *object)
+     g_clear_object (&priv->toolbar_menu_sections->extended_section);
+     g_clear_object (&priv->rename_file_controller);
+     g_clear_object (&priv->new_folder_controller);
+-    g_clear_object (&priv->compress_controller);
+     g_free (priv->toolbar_menu_sections);
  
-     g_hash_table_destroy (view->details->non_ready_files);
-@@ -5964,273 +5679,6 @@ action_rename (GSimpleAction *action,
+     g_hash_table_destroy (priv->non_ready_files);
+@@ -6303,296 +6030,6 @@ action_rename (GSimpleAction *action,
      real_action_rename (NAUTILUS_FILES_VIEW (user_data));
  }
  
@@ -2134,6 +2241,7 @@ index 721682f4b..7caee9b5b 100644
 -extract_done (GList    *outputs,
 -              gpointer  user_data)
 -{
+-    NautilusFilesViewPrivate *priv;
 -    ExtractData *data;
 -    GList *l;
 -    gboolean all_files_acknowledged;
@@ -2144,6 +2252,8 @@ index 721682f4b..7caee9b5b 100644
 -    {
 -        goto out;
 -    }
+-
+-    priv = nautilus_files_view_get_instance_private (data->view);
 -
 -    g_signal_handlers_disconnect_by_func (data->view,
 -                                          G_CALLBACK (track_newly_added_locations),
@@ -2186,7 +2296,7 @@ index 721682f4b..7caee9b5b 100644
 -            acknowledged = g_hash_table_contains (data->added_locations,
 -                                                  l->data);
 -
--            g_hash_table_insert (data->view->details->pending_reveal,
+-            g_hash_table_insert (priv->pending_reveal,
 -                                 nautilus_file_get (l->data),
 -                                 GUINT_TO_POINTER (acknowledged));
 -        }
@@ -2243,7 +2353,7 @@ index 721682f4b..7caee9b5b 100644
 -                                   (gpointer *) &data->view);
 -
 -        g_signal_connect_data (view,
--                               "add-file",
+-                               "add-files",
 -                               G_CALLBACK (track_newly_added_locations),
 -                               data->added_locations,
 -                               NULL,
@@ -2300,9 +2410,12 @@ index 721682f4b..7caee9b5b 100644
 -extract_files_to_chosen_location (NautilusFilesView *view,
 -                                  GList             *files)
 -{
+-    NautilusFilesViewPrivate *priv;
 -    ExtractToData *data;
 -    GtkWidget *dialog;
 -    g_autofree char *uri = NULL;
+-
+-    priv = nautilus_files_view_get_instance_private (view);
 -
 -    if (files == NULL)
 -    {
@@ -2325,7 +2438,24 @@ index 721682f4b..7caee9b5b 100644
 -    gtk_window_set_destroy_with_parent (GTK_WINDOW (dialog), TRUE);
 -    gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
 -
--    uri = nautilus_directory_get_uri (view->details->model);
+-    /* The file chooser will not be able to display the search directory,
+-     * so we need to get the base directory of the search if we are, in fact,
+-     * in search.
+-     */
+-    if (nautilus_view_is_searching (NAUTILUS_VIEW (view)))
+-    {
+-        NautilusSearchDirectory *search_directory;
+-        NautilusDirectory *directory;
+-
+-        search_directory = NAUTILUS_SEARCH_DIRECTORY (priv->model);
+-        directory = nautilus_search_directory_get_base_model (search_directory);
+-        uri = nautilus_directory_get_uri (directory);
+-    }
+-    else
+-    {
+-        uri = nautilus_directory_get_uri (priv->model);
+-    }
+-
 -    gtk_file_chooser_set_current_folder_uri (GTK_FILE_CHOOSER (dialog), uri);
 -
 -    data->view = view;
@@ -2394,7 +2524,7 @@ index 721682f4b..7caee9b5b 100644
  #define BG_KEY_PRIMARY_COLOR      "primary-color"
  #define BG_KEY_SECONDARY_COLOR    "secondary-color"
  #define BG_KEY_COLOR_TYPE         "color-shading-type"
-@@ -6691,9 +6139,6 @@ const GActionEntry view_entries[] =
+@@ -7052,9 +6489,6 @@ const GActionEntry view_entries[] =
      { "restore-from-trash", action_restore_from_trash},
      { "paste-into", action_paste_files_into },
      { "rename", action_rename},
@@ -2404,7 +2534,7 @@ index 721682f4b..7caee9b5b 100644
      { "properties", action_properties},
      { "set-as-wallpaper", action_set_as_wallpaper },
      { "mount-volume", action_mount_volume },
-@@ -6997,23 +6442,6 @@ all_in_trash (GList *files)
+@@ -7363,40 +6797,6 @@ all_in_trash (GList *files)
      return TRUE;
  }
  
@@ -2425,69 +2555,66 @@ index 721682f4b..7caee9b5b 100644
 -    return TRUE;
 -}
 -
+-static gboolean
+-nautilus_handles_all_files_to_extract (GList *files)
+-{
+-    NautilusFile *file;
+-    GList *l;
+-
+-    for (l = files; l != NULL; l = l->next)
+-    {
+-        file = l->data;
+-        if (!nautilus_mime_file_extracts (file))
+-        {
+-            return FALSE;
+-        }
+-    }
+-    return TRUE;
+-}
+-
  GActionGroup *
  nautilus_files_view_get_action_group (NautilusFilesView *view)
  {
-@@ -7040,8 +6468,6 @@ real_update_actions_state (NautilusFilesView *view)
+@@ -7429,9 +6829,6 @@ real_update_actions_state (NautilusFilesView *view)
      gboolean can_trash_files;
      gboolean can_copy_files;
      gboolean can_paste_files_into;
 -    gboolean can_extract_files;
+-    gboolean handles_all_files_to_extract;
 -    gboolean can_extract_here;
      gboolean item_opens_in_view;
      gboolean is_read_only;
      GAction *action;
-@@ -7054,7 +6480,6 @@ real_update_actions_state (NautilusFilesView *view)
-     gboolean show_detect_media;
-     gboolean settings_show_delete_permanently;
-     gboolean settings_show_create_link;
--    gboolean settings_automatic_decompression;
-     GDriveStartStopType start_stop_type;
- 
-     view_action_group = view->details->view_action_group;
-@@ -7088,15 +6513,10 @@ real_update_actions_state (NautilusFilesView *view)
+@@ -7480,10 +6877,6 @@ real_update_actions_state (NautilusFilesView *view)
      can_paste_files_into = (!selection_contains_recent &&
                              selection_count == 1 &&
                              can_paste_into_file (NAUTILUS_FILE (selection->data)));
 -    can_extract_files = selection_count != 0 &&
 -                        can_extract_all (selection);
 -    can_extract_here = nautilus_files_view_supports_extract_here (view);
+-    handles_all_files_to_extract = nautilus_handles_all_files_to_extract (selection);
      settings_show_delete_permanently = g_settings_get_boolean (nautilus_preferences,
                                                                 NAUTILUS_PREFERENCES_SHOW_DELETE_PERMANENTLY);
      settings_show_create_link = g_settings_get_boolean (nautilus_preferences,
-                                                         NAUTILUS_PREFERENCES_SHOW_CREATE_LINK);
--    settings_automatic_decompression = g_settings_get_boolean (nautilus_preferences,
--                                                               NAUTILUS_PREFERENCES_AUTOMATIC_DECOMPRESSION);
- 
-     /* Right click actions */
-     /* Selection menu actions */
-@@ -7132,25 +6552,6 @@ real_update_actions_state (NautilusFilesView *view)
-     }
+@@ -7519,17 +6912,6 @@ real_update_actions_state (NautilusFilesView *view)
  
      action = g_action_map_lookup_action (G_ACTION_MAP (view_action_group),
--                                         "extract-here");
+                                          "extract-here");
 -    g_simple_action_set_enabled (G_SIMPLE_ACTION (action),
 -                                 can_extract_files &&
--                                 !settings_automatic_decompression &&
+-                                 !handles_all_files_to_extract &&
 -                                 can_extract_here);
 -
 -    action = g_action_map_lookup_action (G_ACTION_MAP (view_action_group),
 -                                         "extract-to");
 -    g_simple_action_set_enabled (G_SIMPLE_ACTION (action),
 -                                 can_extract_files &&
--                                 (!settings_automatic_decompression ||
+-                                 (!handles_all_files_to_extract ||
 -                                  can_extract_here));
--
--    action = g_action_map_lookup_action (G_ACTION_MAP (view_action_group),
--                                         "compress");
--    g_simple_action_set_enabled (G_SIMPLE_ACTION (action),
--                                 can_create_files && can_copy_files);
--
--    action = g_action_map_lookup_action (G_ACTION_MAP (view_action_group),
-                                          "open-item-location");
  
-     g_simple_action_set_enabled (G_SIMPLE_ACTION (action),
-@@ -7417,7 +6818,6 @@ update_selection_menu (NautilusFilesView *view)
+     action = g_action_map_lookup_action (G_ACTION_MAP (view_action_group),
+                                          "compress");
+@@ -7804,7 +7186,6 @@ update_selection_menu (NautilusFilesView *view)
      gint selection_count;
      gboolean show_app;
      gboolean show_run;
@@ -2495,7 +2622,7 @@ index 721682f4b..7caee9b5b 100644
      gboolean item_opens_in_view;
      gchar *item_label;
      GAppInfo *app;
-@@ -7455,17 +6855,13 @@ update_selection_menu (NautilusFilesView *view)
+@@ -7844,18 +7225,13 @@ update_selection_menu (NautilusFilesView *view)
      g_free (item_label);
  
      /* Open With <App> menu item */
@@ -2511,10 +2638,11 @@ index 721682f4b..7caee9b5b 100644
 -        {
 -            show_extract = FALSE;
 -        }
- 
+-
          if (!nautilus_mime_file_opens_in_external_app (file))
          {
-@@ -7482,7 +6878,7 @@ update_selection_menu (NautilusFilesView *view)
+             show_app = FALSE;
+@@ -7871,7 +7247,7 @@ update_selection_menu (NautilusFilesView *view)
              item_opens_in_view = FALSE;
          }
  
@@ -2523,7 +2651,7 @@ index 721682f4b..7caee9b5b 100644
          {
              break;
          }
-@@ -7515,12 +6911,6 @@ update_selection_menu (NautilusFilesView *view)
+@@ -7904,12 +7280,6 @@ update_selection_menu (NautilusFilesView *view)
      {
          item_label = g_strdup (_("Run"));
      }
@@ -2537,10 +2665,10 @@ index 721682f4b..7caee9b5b 100644
      {
          item_label = g_strdup (_("Open"));
 diff --git a/src/nautilus-mime-actions.c b/src/nautilus-mime-actions.c
-index 3f7033baa..796dabbe1 100644
+index 882716054..7a4029cbb 100644
 --- a/src/nautilus-mime-actions.c
 +++ b/src/nautilus-mime-actions.c
-@@ -54,7 +54,6 @@ typedef enum
+@@ -56,7 +56,6 @@ typedef enum
      ACTIVATION_ACTION_LAUNCH_IN_TERMINAL,
      ACTIVATION_ACTION_OPEN_IN_VIEW,
      ACTIVATION_ACTION_OPEN_IN_APPLICATION,
@@ -2548,56 +2676,258 @@ index 3f7033baa..796dabbe1 100644
      ACTIVATION_ACTION_DO_NOTHING,
  } ActivationAction;
  
-@@ -716,14 +715,6 @@ get_activation_action (NautilusFile *file)
+@@ -715,20 +714,6 @@ get_activation_action (NautilusFile *file)
  {
      ActivationAction action;
      char *activation_uri;
--    gboolean can_extract;
--    can_extract = g_settings_get_boolean (nautilus_preferences,
--                                          NAUTILUS_PREFERENCES_AUTOMATIC_DECOMPRESSION);
+-    gboolean handles_extract = FALSE;
+-    g_autoptr (GAppInfo) app_info = NULL;
+-    const gchar* app_id;
 -
--    if (can_extract && nautilus_file_is_archive (file))
+-    app_info = nautilus_mime_get_default_application_for_file (file);
+-    if (app_info != NULL)
+-    {
+-        app_id = g_app_info_get_id (app_info);
+-        handles_extract = g_strcmp0 (app_id, NAUTILUS_DESKTOP_ID) == 0;
+-    }
+-    if (handles_extract && nautilus_file_is_archive (file))
 -    {
 -        return ACTIVATION_ACTION_EXTRACT;
 -    }
  
      if (nautilus_file_is_nautilus_link (file))
      {
-@@ -772,12 +763,6 @@ get_activation_action (NautilusFile *file)
+@@ -776,12 +761,6 @@ get_activation_action (NautilusFile *file)
+     return action;
  }
  
- gboolean
+-gboolean
 -nautilus_mime_file_extracts (NautilusFile *file)
 -{
 -    return get_activation_action (file) == ACTIVATION_ACTION_EXTRACT;
 -}
 -
--gboolean
+ gboolean
  nautilus_mime_file_launches (NautilusFile *file)
  {
-     ActivationAction activation_action;
-@@ -1712,13 +1697,6 @@ activate_files (ActivateParameters *parameters)
-                 }
-                 break;
+@@ -1673,13 +1652,6 @@ activate_files (ActivateParameters *parameters)
+             }
+             break;
  
 -            case ACTIVATION_ACTION_EXTRACT:
--                {
--                    /* Extraction of files should be handled in the view */
--                    g_assert_not_reached ();
--                }
--                break;
+-            {
+-                /* Extraction of files should be handled in the view */
+-                g_assert_not_reached ();
+-            }
+-            break;
 -
              case ACTIVATION_ACTION_ASK:
-                 {
-                     g_assert_not_reached ();
-@@ -2475,6 +2453,7 @@ nautilus_mime_activate_files (GtkWindow               *parent_window,
-     }
- 
- 
-+    g_print ("number of files %d\n", g_list_length (parameters->locations));
-     for (l = parameters->locations; l != NULL; l = next)
-     {
-         location = l->data;
+             {
+                 g_assert_not_reached ();
+diff --git a/src/resources/nautilus.gresource.xml b/src/resources/nautilus.gresource.xml
+index 3dd60ba6d..90e07f319 100644
+--- a/src/resources/nautilus.gresource.xml
++++ b/src/resources/nautilus.gresource.xml
+@@ -9,7 +9,6 @@
+     <file>ui/nautilus-toolbar-menu.ui</file>
+     <file>ui/nautilus-toolbar-view-menu.ui</file>
+     <file>ui/nautilus-create-folder-dialog.ui</file>
+-    <file>ui/nautilus-compress-dialog.ui</file>
+     <file>ui/nautilus-rename-file-popover.ui</file>
+     <file>ui/nautilus-files-view-context-menus.ui</file>
+     <file>ui/nautilus-progress-info-widget.ui</file>
+diff --git a/src/resources/ui/nautilus-compress-dialog.ui b/src/resources/ui/nautilus-compress-dialog.ui
+deleted file mode 100644
+index 526e9eed2..000000000
+--- a/src/resources/ui/nautilus-compress-dialog.ui
++++ /dev/null
+@@ -1,186 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<interface>
+-  <requires lib="gtk+" version="3.14"/>
+-  <object class="GtkDialog" id="compress_dialog">
+-    <property name="title" translatable="yes">Create Archive</property>
+-    <property name="resizable">False</property>
+-    <property name="modal">True</property>
+-    <property name="window_position">center-on-parent</property>
+-    <property name="destroy_with_parent">True</property>
+-    <property name="type_hint">dialog</property>
+-    <property name="use-header-bar">1</property>
+-    <child internal-child="vbox">
+-      <object class="GtkBox" id="vbox">
+-        <property name="orientation">vertical</property>
+-        <property name="margin_top">18</property>
+-        <property name="margin_bottom">12</property>
+-        <property name="margin_start">18</property>
+-        <property name="margin_end">18</property>
+-        <property name="spacing">6</property>
+-        <child>
+-          <object class="GtkLabel" id="name_label">
+-            <property name="label" translatable="yes">Archive name</property>
+-            <property name="visible">True</property>
+-            <property name="xalign">0</property>
+-          </object>
+-          <packing>
+-            <property name="expand">False</property>
+-            <property name="fill">True</property>
+-            <property name="position">1</property>
+-          </packing>
+-        </child>
+-        <child>
+-          <object class="GtkEntry" id="name_entry">
+-            <property name="visible">True</property>
+-            <property name="can_focus">True</property>
+-          </object>
+-          <packing>
+-            <property name="expand">False</property>
+-            <property name="fill">True</property>
+-            <property name="position">2</property>
+-          </packing>
+-        </child>
+-        <child>
+-          <object class="GtkRevealer" id="error_revealer">
+-            <child>
+-              <object class="GtkLabel" id="error_label">
+-                <property name="margin_top">4</property>
+-                <property name="margin_bottom">4</property>
+-                <property name="visible">True</property>
+-                <property name="xalign">0</property>
+-              </object>
+-            </child>
+-          </object>
+-          <packing>
+-            <property name="expand">False</property>
+-            <property name="fill">True</property>
+-            <property name="position">3</property>
+-          </packing>
+-        </child>
+-        <child>
+-          <object class="GtkBox" id="hbox">
+-            <property name="orientation">horizontal</property>
+-            <property name="homogeneous">True</property>
+-            <property name="spacing">0</property>
+-            <child>
+-              <object class="GtkRadioButton" id="zip_radio_button">
+-                <property name="label" translatable="no">.zip</property>
+-                <property name="draw_indicator">True</property>
+-                <signal name="toggled" handler="zip_radio_button_on_toggled"/>
+-              </object>
+-              <packing>
+-                <property name="expand">True</property>
+-                <property name="fill">True</property>
+-                <property name="position">0</property>
+-              </packing>
+-            </child>
+-            <child>
+-              <object class="GtkRadioButton" id="tar_xz_radio_button">
+-                <property name="label" translatable="no">.tar.xz</property>
+-                <property name="group">zip_radio_button</property>
+-                <property name="draw_indicator">True</property>
+-                <signal name="toggled" handler="tar_xz_radio_button_on_toggled"/>
+-              </object>
+-              <packing>
+-                <property name="expand">True</property>
+-                <property name="fill">True</property>
+-                <property name="position">1</property>
+-              </packing>
+-            </child>
+-            <child>
+-              <object class="GtkRadioButton" id="seven_zip_radio_button">
+-                <property name="label" translatable="no">.7z</property>
+-                <property name="group">zip_radio_button</property>
+-                <property name="draw_indicator">True</property>
+-                <signal name="toggled" handler="seven_zip_radio_button_on_toggled"/>
+-              </object>
+-              <packing>
+-                <property name="expand">True</property>
+-                <property name="fill">True</property>
+-                <property name="position">2</property>
+-              </packing>
+-            </child>
+-          </object>
+-          <packing>
+-            <property name="expand">False</property>
+-            <property name="fill">True</property>
+-            <property name="position">4</property>
+-          </packing>
+-        </child>
+-        <child>
+-          <object class="GtkStack" id="description_stack">
+-            <property name="visible">True</property>
+-            <property name="can_focus">False</property>
+-            <property name="homogeneous">True</property>
+-            <child>
+-              <object class="GtkLabel" id="zip_description_label">
+-                <property name="visible">True</property>
+-                <property name="label" translatable="yes">Compatible with all operating systems.</property>
+-                <property name="xalign">0</property>
+-                <style>
+-                  <class name="dim-label"/>
+-                </style>
+-              </object>
+-              <packing>
+-                <property name="name">zip-description-label</property>
+-              </packing>
+-            </child>
+-            <child>
+-              <object class="GtkLabel" id="tar_xz_description_label">
+-                <property name="visible">True</property>
+-                <property name="label" translatable="yes">Smaller archives but Linux and Mac only.</property>
+-                <property name="xalign">0</property>
+-                <style>
+-                  <class name="dim-label"/>
+-                </style>
+-              </object>
+-              <packing>
+-                <property name="name">tar-xz-description-label</property>
+-              </packing>
+-            </child>
+-            <child>
+-              <object class="GtkLabel" id="seven_zip_description_label">
+-                <property name="visible">True</property>
+-                <property name="label" translatable="yes">Smaller archives but must be installed on Windows and Mac.</property>
+-                <property name="xalign">0</property>
+-                <style>
+-                  <class name="dim-label"/>
+-                </style>
+-              </object>
+-              <packing>
+-                <property name="name">seven-zip-description-label</property>
+-              </packing>
+-            </child>
+-          </object>
+-          <packing>
+-            <property name="expand">False</property>
+-            <property name="fill">True</property>
+-            <property name="position">5</property>
+-          </packing>
+-        </child>
+-      </object>
+-    </child>
+-    <child type="action">
+-      <object class="GtkButton" id="cancel_button">
+-        <property name="label" translatable="yes">Cancel</property>
+-        <property name="visible">True</property>
+-        <property name="can_focus">True</property>
+-        <property name="receives_default">True</property>
+-      </object>
+-    </child>
+-    <child type="action">
+-      <object class="GtkButton" id="activate_button">
+-        <property name="label" translatable="yes">Create</property>
+-        <property name="visible">True</property>
+-        <property name="can_focus">True</property>
+-        <property name="can_default">True</property>
+-        <property name="receives_default">True</property>
+-        <property name="sensitive">False</property>
+-      </object>
+-    </child>
+-    <action-widgets>
+-      <action-widget response="ok" default="true">activate_button</action-widget>
+-      <action-widget response="cancel">cancel_button</action-widget>
+-    </action-widgets>
+-  </object>
+-</interface>
 -- 
-2.12.0
+2.17.1
 

@@ -1,0 +1,50 @@
+From 0cc6b39e0447560668370832e10090f6f9068473 Mon Sep 17 00:00:00 2001
+From: Carlos Soriano <csoriano@gnome.org>
+Date: Fri, 8 Jun 2018 19:03:09 +0200
+Subject: [PATCH] Meson: Make sure __GNU_SOURCE is set
+
+Otherwise the build fails in some systems like RHEL.
+---
+ meson.build         | 3 +++
+ src/nautilus-file.c | 4 ++++
+ 2 files changed, 7 insertions(+)
+
+diff --git a/meson.build b/meson.build
+index e3e6875d7..db648eb50 100644
+--- a/meson.build
++++ b/meson.build
+@@ -5,6 +5,7 @@ project ('nautilus', 'c',
+          license: 'GPL3+')
+ 
+ add_global_arguments ('-Wno-deprecated-declarations', language:'c')
++add_project_arguments('-D_GNU_SOURCE', language: 'c')
+ 
+ bindir = get_option ('bindir')
+ datadir = get_option ('datadir')
+@@ -80,6 +81,8 @@ if get_option ('enable-selinux')
+     conf.set10 ('HAVE_SELINUX', true)
+ endif
+ 
++conf.set10('_GNU_SOURCE', true)
++
+ tracker_sparql = dependency ('tracker-sparql-2.0', required: false)
+ if not tracker_sparql.found()
+     tracker_sparql = dependency ('tracker-sparql-1.0')
+diff --git a/src/nautilus-file.c b/src/nautilus-file.c
+index 053158cb6..1968bf277 100644
+--- a/src/nautilus-file.c
++++ b/src/nautilus-file.c
+@@ -19,6 +19,10 @@
+  *  Author: Darin Adler <darin@bentspoon.com>
+  */
+ 
++#ifndef _GNU_SOURCE
++# define _GNU_SOURCE    1
++#endif
++
+ #include <config.h>
+ #include "nautilus-file.h"
+ 
+-- 
+2.17.1
+

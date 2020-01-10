@@ -1,0 +1,22 @@
+From 6b58c14e82f80c2318513dae8f2646a18d5b60d3 Mon Sep 17 00:00:00 2001
+From: Carlos Soriano <csoriano@gnome.org>
+Date: Fri, 8 Jun 2018 17:22:08 +0200
+Subject: [PATCH 1/2] meson: Request c11 when possible
+
+---
+ meson.build | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/meson.build b/meson.build
+index 7a450292d..e3e6875d7 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1,4 +1,5 @@
+ project ('nautilus', 'c',
++         default_options: ['c_std=c11'],
+          version: '3.26.3.1',
+          meson_version: '>=0.40.0',
+          license: 'GPL3+')
+-- 
+2.17.1
+

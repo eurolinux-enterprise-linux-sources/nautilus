@@ -7,20 +7,23 @@
 %global gsettings_desktop_schemas_version 3.8.0
 
 Name:           nautilus
-Version:        3.22.3
-Release:        5%{?dist}
+Version:        3.26.3.1
+Release:        2%{?dist}
 Summary:        File manager for GNOME
 
-License:        GPLv2+
+License:        GPLv3+
 URL:            https://wiki.gnome.org/Apps/Nautilus
-Source0:        https://download.gnome.org/sources/%{name}/3.22/%{name}-%{version}.tar.xz
+Source0:        https://download.gnome.org/sources/%{name}/3.26/%{name}-%{version}.tar.xz
 
 # Don't use gnome-autoar which we don't currently have in RHEL 7.4
 Patch0:         0001-general-remove-gnome-autoar.patch
-Patch1:         0001-translation-Add-Japanese.patch
-Patch2:         0001-mime-actions-use-file-metadata-for-trusting-desktop-.patch
-Patch3:         nautilus_785292.patch
+Patch1:         0001-meson-Request-c11-when-possible.patch
+Patch2:         0001-file-Make-sure-we-include-necessary-headers.patch
+Patch3:	        0001-Meson-Make-sure-__GNU_SOURCE-is-set.patch
+Patch4:	        0001-meson-Use-python2-for-postinstall.patch
 
+BuildRequires:  gtk-doc
+BuildRequires:  meson
 BuildRequires:  pkgconfig(exempi-2.0) >= %{exempi_version}
 BuildRequires:  pkgconfig(glib-2.0) >= %{glib2_version}
 BuildRequires:  pkgconfig(gnome-desktop-3.0) >= %{gnome_desktop3_version}
@@ -34,11 +37,8 @@ BuildRequires:  pkgconfig(x11)
 BuildRequires:  /usr/bin/appstream-util
 BuildRequires:  desktop-file-utils
 BuildRequires:  gettext
-BuildRequires:  intltool >= 0.40.6-2
 BuildRequires:  libselinux-devel
 # For patch0
-BuildRequires:  autoconf automake libtool
-BuildRequires:  autoconf-archive
 BuildRequires:  gettext-devel
 BuildRequires:  gtk-doc
 
@@ -79,28 +79,15 @@ This package provides libraries and header files needed
 for developing nautilus extensions.
 
 %prep
-%setup -q
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
+%autosetup -p1
 
 %build
-# For patch0
-autoreconf -fi
-
-%configure
-
-# drop unneeded direct library deps with --as-needed
-# libtool doesn't make this easy, so we do it the hard way
-sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0 /g' libtool
-
-make %{?_smp_mflags} V=1
+# RHEL 7 doesn't have python3...
+%meson -Denable-gtk-doc=true
+%meson_build
 
 %install
-%make_install
-
-find $RPM_BUILD_ROOT -name '*.la' -delete
+%meson_install
 
 # Update the screenshot shown in the software center
 #
@@ -108,7 +95,7 @@ find $RPM_BUILD_ROOT -name '*.la' -delete
 #
 # See http://people.freedesktop.org/~hughsient/appdata/#screenshots for more details.
 #
-appstream-util replace-screenshots $RPM_BUILD_ROOT%{_datadir}/appdata/org.gnome.Nautilus.appdata.xml \
+appstream-util replace-screenshots $RPM_BUILD_ROOT%{_datadir}/metainfo/org.gnome.Nautilus.appdata.xml \
   https://raw.githubusercontent.com/hughsie/fedora-appstream/master/screenshots-extra/org.gnome.Nautilus/a.png \
   https://raw.githubusercontent.com/hughsie/fedora-appstream/master/screenshots-extra/org.gnome.Nautilus/b.png \
   https://raw.githubusercontent.com/hughsie/fedora-appstream/master/screenshots-extra/org.gnome.Nautilus/c.png 
@@ -116,7 +103,7 @@ appstream-util replace-screenshots $RPM_BUILD_ROOT%{_datadir}/appdata/org.gnome.
 %find_lang %name
 
 %check
-appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_datadir}/appdata/org.gnome.Nautilus.appdata.xml
+appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_datadir}/metainfo/org.gnome.Nautilus.appdata.xml
 desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/*.desktop
 
 %postun
@@ -132,9 +119,8 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas >&/dev/null || :
 %postun extensions -p /sbin/ldconfig
 
 %files  -f %{name}.lang
-%doc AUTHORS NEWS README
-%license COPYING
-%{_datadir}/appdata/org.gnome.Nautilus.appdata.xml
+%doc NEWS README.md
+%license LICENSE
 %{_datadir}/applications/*
 %{_bindir}/*
 %{_datadir}/dbus-1/services/org.gnome.Nautilus.service
@@ -144,13 +130,14 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas >&/dev/null || :
 %{_datadir}/icons/hicolor/symbolic/apps/org.gnome.Nautilus-symbolic.svg
 %{_mandir}/man1/nautilus.1*
 %{_datadir}/glib-2.0/schemas/org.gnome.nautilus.gschema.xml
+%{_datadir}/metainfo/org.gnome.Nautilus.appdata.xml
 %dir %{_libdir}/nautilus
 %dir %{_libdir}/nautilus/extensions-3.0
 %{_libdir}/nautilus/extensions-3.0/libnautilus-sendto.so
 %{_sysconfdir}/xdg/autostart/nautilus-autostart.desktop
 
 %files extensions
-%license COPYING.EXTENSIONS COPYING.LIB
+%license libnautilus-extension/LICENSE
 %{_libdir}/libnautilus-extension.so.*
 %{_libdir}/girepository-1.0/*.typelib
 %dir %{_libdir}/nautilus
@@ -165,6 +152,14 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas >&/dev/null || :
 %doc %{_datadir}/gtk-doc/html/libnautilus-extension/
 
 %changelog
+* Wed Jun 06 2018 Carlos Soriano <csoriano@redhat.com> - 3.26.3.1-2
+- Rework autoar patch and remove the trusted patch, as it's included
+- Resolves: #1569738
+
+* Wed Jun 06 2018 Richard Hughes <rhughes@redhat.com> - 3.26.3.1-1
+- Update to 3.26.3.1
+- Resolves: #1569738
+
 * Thu Nov 02 2017 Carlos Soriano <csoriano@redhat.com> 3.22.3-5
 - Fix exempi not being initialized. Upstream bugzilla.gnome.org/785292
  Resolves: #1496713

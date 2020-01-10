@@ -1,0 +1,46 @@
+From 268b8d7343591b9c1cb379f6e65f061a4da461e8 Mon Sep 17 00:00:00 2001
+From: Carlos Soriano <csoriano@gnome.org>
+Date: Fri, 8 Jun 2018 19:53:02 +0200
+Subject: [PATCH] meson: Use python2 for postinstall
+
+RHEL 7 doesn't have python3...
+---
+ build-aux/meson/postinstall.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/build-aux/meson/postinstall.py b/build-aux/meson/postinstall.py
+index 81afb18b7..04c6464d7 100755
+--- a/build-aux/meson/postinstall.py
++++ b/build-aux/meson/postinstall.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python3
++#!/usr/bin/env python2
+ 
+ import os
+ import subprocess
+@@ -8,19 +8,19 @@ datadir = os.path.join(prefix, 'share')
+ 
+ # Packaging tools define DESTDIR and this isn't needed for them
+ if 'DESTDIR' not in os.environ:
+-    print('Updating icon cache...')
++    print 'Updating icon cache...'
+     icon_cache_dir = os.path.join(datadir, 'icons', 'hicolor')
+     if not os.path.exists(icon_cache_dir):
+         os.makedirs(icon_cache_dir)
+     subprocess.call(['gtk-update-icon-cache', '-qtf', icon_cache_dir])
+ 
+-    print('Updating desktop database...')
++    print 'Updating desktop database...'
+     desktop_database_dir = os.path.join(datadir, 'applications')
+     if not os.path.exists(desktop_database_dir):
+         os.makedirs(desktop_database_dir)
+     subprocess.call(['update-desktop-database', '-q', desktop_database_dir])
+ 
+-    print('Compiling GSettings schemas...')
++    print 'Compiling GSettings schemas...'
+     schemas_dir = os.path.join(datadir, 'glib-2.0', 'schemas')
+     if not os.path.exists(schemas_dir):
+         os.makedirs(schemas_dir)
+-- 
+2.17.1
+

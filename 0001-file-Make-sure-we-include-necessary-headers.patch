@@ -1,0 +1,29 @@
+From 408e968d8a3382284909ffe66c0d5a62c9e5f1c0 Mon Sep 17 00:00:00 2001
+From: Carlos Soriano <csoriano@gnome.org>
+Date: Fri, 8 Jun 2018 17:22:23 +0200
+Subject: [PATCH 1/2] file: Make sure we include necessary headers
+
+setpwent is used but we didn't include the necessary headers.
+
+It was building in Fedora because some other header included it,
+but that's not the case in RHEL.
+---
+ src/nautilus-file.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/nautilus-file.c b/src/nautilus-file.c
+index cff660f1f..053158cb6 100644
+--- a/src/nautilus-file.c
++++ b/src/nautilus-file.c
+@@ -55,6 +55,8 @@
+ #include <libnautilus-extension/nautilus-file-info.h>
+ #include <libnautilus-extension/nautilus-extension-private.h>
+ #include <libxml/parser.h>
++#include <sys/types.h>
++#include <limits.h>
+ #include <pwd.h>
+ #include <stdlib.h>
+ #include <sys/time.h>
+-- 
+2.17.1
+
