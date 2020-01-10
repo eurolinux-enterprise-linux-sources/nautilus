@@ -1,0 +1,3344 @@
+commit 841888d2c691de285dfcb3bed185aa3688a6bb38
+Author: Alexander Larsson <alexl@redhat.com>
+Date:   2009-12-15
+
+    Update NEWS for release
+
+M	NEWS
+
+commit a799568dc744c6d5d715f3c05010506bb61583aa
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-12-15
+
+    Make trash keybindings only work if the action is sensitive
+
+    This fixes https://bugzilla.gnome.org/show_bug.cgi?id=603413 in
+    a way not causing regressions.
+    (cherry picked from commit 9c7c2c9d2cc0a8648abf2dbc851e9efec3e3df1c)
+
+M	src/file-manager/fm-directory-view.c
+
+commit 00516ab6c30430a83136a0092bfd2d7bf729b4d9
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-12-15
+
+    Use right signal handler for delete signal action
+
+    This is not actually called atm, since an action overrides it, but
+    we should do it right anyway.
+    (cherry picked from commit d87cf7e75c37d139631807bc22c07ba879f8218f)
+
+M	src/file-manager/fm-directory-view.c
+
+commit 74cf60a37bfbc21d9d3fb234db42cb235679296f
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-12-15
+
+    Revert "Disable Trash/Delete key bindings when appropriate"
+
+    This reverts commit ac73dd5c2159defcc9686f1ecce47059b48e2ccd.
+    It causes regressions (see bug 603413)
+
+M	src/file-manager/fm-actions.h
+M	src/file-manager/fm-directory-view.c
+M	src/file-manager/nautilus-directory-view-ui.xml
+
+commit 87c51077a5b90d51db2b2ab22f59023043c7eb80
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-12-15
+
+    Post release version bump
+
+M	configure.in
+
+commit 91489f225b5b6329af2a9bd84dd7712c50df082b
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-12-14
+
+    Don't access uninitialized variable
+
+    gdk_property_get doesn't set prop_text if it fails.
+    (cherry picked from commit 75bcfea177c837215ea46c970bfea24ec04a3dae)
+
+M	libnautilus-private/nautilus-icon-dnd.c
+M	libnautilus-private/nautilus-tree-view-drag-dest.c
+
+commit 6137b502fb9b5be2a85f79abf151084240cdd3d6
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-12-14
+
+    Update NEWS for release
+
+M	NEWS
+
+commit 74abd44a297ffb7a2540e21ba11e2edd7a64a325
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-12-11
+
+    Don't rewrite bookmarks file when file appearance changes
+
+    We no longer write the icon to the bookmarks file so this is just
+    unnecessary. Also this means we don't rewrite the bookmark file
+    on each
+    startup.
+    (cherry picked from commit 55f1438bf898c819504dae540a7540ec30508f1e)
+
+M	src/nautilus-bookmark-list.c
+
+commit 449ad015c184d4ce0693b8dd51def8fe1b595870
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-12-08
+
+    Don't leak NautilusDirectory
+    (cherry picked from commit 2d61fcdf4987802441b7d9dab5364a28fb2dbd7c)
+
+M	libnautilus-private/nautilus-file.c
+
+commit 87fa7e50a68d80f171340148d509739f5ca9a218
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-12-08
+
+    Don't leak NautilusDirectory
+    (cherry picked from commit ac9f08eb1f74b32c432b0a4904fb57e982202a4c)
+
+M	src/nautilus-navigation-window.c
+
+commit 678ce5181f51399e0b2f7a6cc198fecd9c728312
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-12-04
+
+    Don't change background on the initial style_set call
+
+    This results in queueing an unnecessary background change
+    which causes the EelBackground to be unrealized wrongly.
+
+    This fixes https://bugzilla.gnome.org/show_bug.cgi?id=578136
+    (cherry picked from commit 002bea81792cdfe6f4e45da95a59708040566171)
+
+M	eel/eel-background.c
+
+commit 130efa47d9915a536c72ce8e14dd53b26c1c0156
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-12-04
+
+    Revert commit 7b86b78e2ff6a0f1b45ac8f8a9c30cf3d0c6ae96
+
+    This is not the right solution
+    (cherry picked from commit fd2e7311edd0d673adc21efdd7d4c6585723c730)
+
+M	eel/eel-background.c
+
+commit 81655ec8fb3a67c90bc37e4668e9c59e2071fb75
+Author: Ivar Smolin <okul@linux.ee>
+Date:	2009-12-04
+
+    Updating Estonian translation
+
+M	po/et.po
+
+commit bda55eedf935aaf4ccae7dc57b3340148a401749
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:	2009-12-04
+
+    Fix typo
+
+M	po/ar.po
+
+commit ac73dd5c2159defcc9686f1ecce47059b48e2ccd
+Author: Michael Terry <michael.terry@canonical.com>
+Date:	2009-12-01
+
+    Disable Trash/Delete key bindings when appropriate
+
+    This makes trash/delete key binding be enabled/disabled just like
+    the menu items are.
+    (cherry picked from commit e7c171acb8060436969139210060874f3a43d835)
+
+M	src/file-manager/fm-actions.h
+M	src/file-manager/fm-directory-view.c
+M	src/file-manager/nautilus-directory-view-ui.xml
+
+commit cebeb68e03cb0a95b4c19e9a964d181916cadaba
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-11-30
+
+    Post release version bump
+
+M	configure.in
+
+commit d7ba2d1f2442effaea493f74b5055c57ec6965b4
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-11-30
+
+    Update NEWS for release
+
+M	NEWS
+
+commit 54a7ffeda3e35b13ba61f285af58afd220a11a47
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-11-25
+
+    Avoid deprecated gtk_button_pressed/released
+
+    We replace these with direct use of deprecated signals,
+    which is not ideal either. However, it makes us not reference
+    depcrecated symbols and makes it works. I don't know how else
+    to solve this.
+    (cherry picked from commit 6ff1e3881e070a0a235208cc10dfdc53e8faa0aa)
+
+M	src/nautilus-navigation-action.c
+M	src/nautilus-window-menus.c
+
+commit 63a1079819293d371c09afd89324e8a9d376fa57
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-11-27
+
+    Don't free uninitilized errors
+
+    test_dir_is_parent doesn't set error, so no need to free it.
+    (cherry picked from commit 72e1296847061336059a089b0367c86f00e5f08f)
+
+M	libnautilus-private/nautilus-file-operations.c
+
+commit 5cea9b09ea46a8ee6a20458150bd1e6556e05089
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-11-26
+
+    Ensure show-hidden-files UI is uptodate
+
+    When we read the per-location show-hidden-files setting, also
+    update the UI.
+
+    Fixes bug #568089.
+    (cherry picked from commit 5b1159927b98b569fcb22f05986a140a7c42ba0a)
+
+M	src/nautilus-window-manage-views.c
+
+commit f67f8b4bc800d0096f26443fcd815675466e2b7f
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-11-19
+
+    Ensure ABS calls work on difference of unsigned values
+
+    guint64 - guint64 is of type guint64, so ABS doesn't work on it.
+    Cast to gint64 to make sure this works.
+    (cherry picked from commit 1f8f54f4777343dda87043e444a24c3f86e90439)
+
+M	libnautilus-private/nautilus-file-operations.c
+
+commit d5be5ed688bfeb7a8514c2ae3659921f79cdd0eb
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-11-02
+
+    Don't get drag data in list mode if we don't support the target.
+
+    This fixes bug #600183.
+    (cherry picked from commit 6613262f4e6d40d153299d7fd4726210268a2a53)
+
+M	libnautilus-private/nautilus-tree-view-drag-dest.c
+
+commit d464b11f167a0125a17ba2555ceec99880a848fb
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-11-02
+
+    Emit the selection-changed signal when inverting.
+
+    Do emit the selection-changed signal in NautilusIconContainer when we
+    invert the selection, so that the views can update the UI items
+    accordingly (#600308).
+    (cherry picked from commit 71e7b576751c1192fe0c05529619f4c0aba674c0)
+
+M	libnautilus-private/nautilus-icon-container.c
+
+commit 4a1608718210abce0df914a576c8ea8d8f8c568e
+Author: Nils-Christoph Fiedler <fiedler@medienkompanie.de>
+Date:	2009-11-25
+
+    Updated LowGerman translation
+
+M	po/nds.po
+
+commit 312b2f4187a63b799d1861c512d79bd4aa62a02e
+Author: Pierre Wieser <pwieser@trychlos.org>
+Date:	2009-11-25
+
+    Allow absolute pathnames for plugin menu/toolbar item icons.
+    (cherry picked from commit 6161343d9d3eaa4fa044613085c00415852f8b55)
+
+M	libnautilus-private/nautilus-ui-utilities.c
+M	src/file-manager/fm-directory-view.c
+
+commit e60d5e25b010f58f34231b160c90592a13b9efe8
+Author: Pierre Wieser <pwieser@trychlos.org>
+Date:	2009-11-25
+
+    Add nautilus_icon_info_lookup_from_path()
+    (cherry picked from commit 36d83807cc0744e131e3532714849a7d1bbbf65d)
+
+M	libnautilus-private/nautilus-icon-info.c
+M	libnautilus-private/nautilus-icon-info.h
+
+commit c45bb3bdc577fd845eaec7a15171946e2331ce38
+Author: Nils-Christoph Fiedler <fiedler@medienkompanie.de>
+Date:	2009-11-22
+
+    Updated Low German translation
+
+M	po/nds.po
+
+commit 3329b72f868c2f020aeb9e4f86276cda09ff835a
+Author: Tomas Bzatek <tbzatek@redhat.com>
+Date:	2009-11-10
+
+    Unfreeze updates in directory list view after rename cancellation
+
+    We successfully cancelled rename operation but the directory view
+    was left in frozen state, containing pseudo items with NULL elements.
+
+    Fixes bug 590591.
+    (cherry picked from commit 3ee90909fa92feaf3df0964eed2b95c5d968ba98)
+
+M	src/file-manager/fm-list-view.c
+
+commit 908328c77207b47ac4a43af09422d641b0240331
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-11-17
+
+    Correctly update the request counters
+
+    The request counters weren't updated by
+    nautilus_directory_add_file_monitors
+    and nautilus_directory_remove_file_monitors. This can cause a number
+    of weird
+    problems, including those described in bug #598931.
+
+    This checkin fixes this, and fixes bug #598931.
+    (cherry picked from commit e487552287e5970dbbb39199b55026f2788bb42b)
+
+M	libnautilus-private/nautilus-directory-async.c
+
+commit 52af508eb86c7e32aca06f68a3e3d2f588d56b04
+Author: Aron Xu <aronxu@gnome.org>
+Date:	2009-11-14
+
+    Updated Simplified Chinese translation.
+
+M	po/zh_CN.po
+
+commit 97351c7c5cf7365a36e0f493a06bff81e6c8ddae
+Author: Alexander Shopov <ash@contact.bg>
+Date:	2009-11-13
+
+    Updated Bulgarian translation
+
+M	po/bg.po
+
+commit f6695d8d9c48055f5d93e2830a730f7b6d36e772
+Author: Gintautas Miliauskas <gintautas@miliauskas.lt>
+Date:	2009-10-30
+
+    Updated Lithuanian translation.
+
+M	po/lt.po
+
+commit dc2a0f9f41834da73e24cffc4c95d80c1e1f7ce8
+Author: Gintautas Miliauskas <gintautas@miliauskas.lt>
+Date:	2009-10-25
+
+    Updated Lithuanian translation.
+
+M	po/lt.po
+
+commit 233e80d629ffadc5fcadab21fca8681c7bb6f0d0
+Author: Nils-Christoph Fiedler <linux@medienkompanie.de>
+Date:	2009-10-22
+
+    Added Low German translation
+
+M	po/LINGUAS
+A	po/nds.po
+
+commit 179e403ede67ac141281eec70abc0956929a2556
+Author: Tomas Bzatek <tbzatek@redhat.com>
+Date:	2009-10-20
+
+    Handle failed connection to tracker daemon 0.7 series
+
+    Also, consolidate string memory management, to be consistent and clear
+    on a first sight.
+
+    Related to changes in bug 596082.
+
+M	libnautilus-private/nautilus-search-engine-tracker.c
+
+commit c8646c58152a94d234aaa1bdf25df6d1b3611341
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-10-20
+
+    Post release version bump
+
+M	configure.in
+
+commit 1e675b26cf816594ac103f3a9ccba30744131731
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-10-20
+
+    Update for release
+
+M	NEWS
+
+commit d268eddada9922529b0076ab9044a482a209df1f
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-10-07
+
+    Use the right GConf key for the disable_tabs setting (#580220).
+
+M	libnautilus-private/nautilus-global-preferences.h
+
+commit 024fab20ad0dc9fe45e16a5959d812b732d2ee6e
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-10-07
+
+    Chain up to the parent handler if we click outside any row.
+
+    By doing so, the tree view widget will gain focus anyway.
+    Fix bug #589088.
+
+M	src/file-manager/fm-list-view.c
+
+commit 5bc9d596aed2f44de7b32b510aceec1c90f7b98c
+Author: Marcus Carlson <marcus@mejlamej.nu>
+Date:	2009-10-03
+
+    Make changing visible columns instant. Wasn't like always like this
+    before because nautilus-vfs-file.c saved metadata async.
+
+    https://bugzilla.gnome.org/show_bug.cgi?id=597227
+
+M	src/file-manager/fm-list-view.c
+
+commit 4bd9cb8d3e1b59667334550472b1ffd6a6768e73
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-10-09
+
+    Always check if the drag dest supports the source.
+
+    In the "drag-motion" callback, make sure we check for target !=
+    GDK_NONE
+    before getting non-existent data for it.
+
+M	libnautilus-private/nautilus-dnd.c
+M	src/nautilus-places-sidebar.c
+
+commit af69ce7e9ba5e5150e28aad3d78f8dc8117846ce
+Author: A. Walton <awalton@gnome.org>
+Date:	2009-10-07
+
+    Bug 589375 - Crashes with empty location in edit bookmarks
+
+    Check that the length of the text in the entry is non-NULL.
+
+M	src/nautilus-bookmarks-window.c
+
+commit ed75d333fc18e039f6421d2dc96166e1a3bea6a1
+Author: Xu Li <xu.li@intel.com>
+Date:	2009-07-17
+
+    correct the value of GtkRecentData.app_exec in
+    nautilus_recent_add_file()
+
+M	libnautilus-private/nautilus-recent.c
+
+commit 5cfa20efb636fcacb1fcc227be751da0126ff98b
+Author: Nelson Benítez León <nbenitezl+gnome@gmail.com>
+Date:	2009-05-01
+
+    Avoid crash when holding space bar on focused navigation buttons
+
+    Fixes bgo#580926
+
+M	src/nautilus-navigation-window-menus.c
+M	src/nautilus-window-menus.c
+
+commit 65a42a152be14e5f6d92366d8b52b6c6e21899da
+Author: Reşat SABIQ <tilde.birlik@gmail.com>
+Date:	2009-10-20
+
+    Another minor update for Crimean Tatar (Crimean Turkish) translation
+
+M	po/crh.po
+
+commit 897414a7f5d75727191fbc5372f7fb34bd49674b
+Author: Reşat SABIQ <tilde.birlik@gmail.com>
+Date:	2009-10-19
+
+    Update for Crimean Tatar (Crimean Turkish) translation
+
+M	po/crh.po
+
+commit eef551eaa68f94d03bfebacb975d2c0434c2cd04
+Author: Sveinn í Felli <sveinki@nett.is>
+Date:	2009-10-19
+
+    Added IS translation
+
+M	po/is.po
+
+commit 3daee9d015e9fe38f046fdf708b9b9ea0780a92b
+Author: Kjartan Maraas <kmaraas@gnome.org>
+Date:	2009-10-17
+
+    Updated translation.
+
+M	po/nn.po
+
+commit 2a84893d55ef93c5a1f7cbb029f5d1998d2fa78f
+Author: Kjartan Maraas <kmaraas@gnome.org>
+Date:	2009-10-11
+
+    Updated Norwegian bokmål translation
+
+M	po/nb.po
+
+commit 8ab52ce2cd23bcd1a99a74dfe990d3c73858688c
+Author: Leonid Kanter <leon@asplinux.ru>
+Date:	2009-10-11
+
+    Updated Russian translation
+
+M	po/ru.po
+
+commit 95c4910015fec27e4896072ff959ebe52bd70c81
+Author: Kostas Papadimas <pkst@gnome.org>
+Date:	2009-09-29
+
+    Updated Greek translation.
+
+M	po/el.po
+
+commit b5cec57e0d1f9a90cc39ce3699deb10ec950b6ef
+Author: Jennie Petoumenou <epetoumenou@gmail.com>
+Date:	2009-09-29
+
+    Updated Greek translation
+
+M	po/el.po
+
+commit 08e6114dbdf4553b4bcc12a38b0955da153c8efe
+Author: Jürg Billeter <j@bitron.ch>
+Date:	2009-09-23
+
+    Update tracker support for version 0.7
+
+    Fixes bug 596082.
+
+M	configure.in
+M	libnautilus-private/nautilus-search-engine-tracker.c
+
+commit a2a7f3a2a7909824c7a2643d9251c0e74f17b548
+Author: Timo Jyrinki <timo.jyrinki@iki.fi>
+Date:	2009-09-25
+
+    Update Finnish translation (transition from ”taltio” to
+    ”asema”)
+
+M	po/fi.po
+
+commit 541c225fea1d616d01862d0f6b0ff9086317540a
+Author: Tomas Bzatek <tbzatek@redhat.com>
+Date:	2009-09-24
+
+    Don't rely on activation_uri when detecting mounts
+
+    We test for the activation_uri
+    (i.e. G_FILE_ATTRIBUTE_STANDARD_TARGET_URI)
+    which is usually not exposed from computer:// items until the item
+    is mounted
+    (and that's up to particular gvfs volume monitor).
+
+    Simply don't test for activation_uri, file type of
+    G_FILE_TYPE_MOUNTABLE
+    should be enough.
+
+    This fixes https://bugzilla.redhat.com/show_bug.cgi?id=518570
+
+M	libnautilus-private/nautilus-directory-async.c
+
+commit e15707648d6d92abe455107718a1e0a440c7fe1f
+Author: Christian Neumair <cneumair@gnome.org>
+Date:	2009-09-24
+
+    Correctly position icons for text, netscape URI and URI list drops
+
+    When dropping text, a netscape URI or a URI list to the desktop,
+    remember
+    the position where the drop happened and position the created icon
+    accordingly.
+    Fixes #350022.
+
+M	src/file-manager/fm-directory-view.c
+
+commit 069494e971bba9bfad5cd6997ecf9138677a9bc0
+Author: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>
+Date:	2009-09-23
+
+    Fix Japanese translation
+
+M	po/ja.po
+
+commit 6fec4348ef56f1df6f7609f9632a5bf4c6512e4d
+Author: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>
+Date:	2009-09-23
+
+    Updated Japanese translation
+
+M	po/ja.po
+
+commit 1055993807fe882a3588f59fe0d93b0b0bb063d8
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-09-21
+
+    Post release version bump
+
+M	configure.in
+
+commit c3b8ec1d6927ccc743e57c315cc2a3ba007ec769
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-09-21
+
+    Update for 2.28.0 release
+
+M	NEWS
+M	configure.in
+
+commit 9fc52ea33822f02e2b5ab876f7ae3ddbcea67523
+Author: Shankar Prasad <svenkate@redhat.com>
+Date:	2009-09-21
+
+    Updated Kannada(kn) translation
+
+M	po/kn.po
+
+commit 0cdc94d5345c17e2e929dbd18290ad3e933eb3e5
+Author: Petr Kovar <pknbe@volny.cz>
+Date:	2009-09-20
+
+    Updated Czech translation by Lucas Lommer
+
+    Thanks goes to Tomas Bzatek.
+
+M	po/cs.po
+
+commit cd62ad01e18c0b3b0932af4a9262da1906f2f63a
+Author: Amitakhya Phukan <aphukan@fedoraproject.org>
+Date:	2009-09-20
+
+    Updating Assamese translations
+
+M	po/as.po
+
+commit 40df45a49785a31c2bdbafef3c8a99766333c5a1
+Author: A S Alam <aalam@users.sf.net>
+Date:	2009-09-19
+
+    Updating Translation for Punjabi by A S Alam
+
+M	po/pa.po
+
+commit 8823a3815e0dfcdf92059140d72556ab3acd3b8e
+Author: Theppitak Karoonboonyanan <thep@linux.thai.net>
+Date:	2009-09-19
+
+    Updated Thai translation.
+
+M	po/th.po
+
+commit 0f075e8e97ad070796584d086678c0e1ad539188
+Author: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>
+Date:	2009-09-19
+
+    Updated Japanese translation
+
+M	po/ja.po
+
+commit 752e68860bd37941c5fdef3ae29113d12f8dc195
+Author: Manoj Kumar Giri <mgiri@mgiri.csb>
+Date:	2009-09-18
+
+    Upadated Oriya Translation
+
+M	po/or.po
+
+commit 7242f95d083cebfff768d693d2ebf4282154d508
+Author: Matej Urbančič <mateju@svn.gnome.org>
+Date:	2009-09-18
+
+    Updated Slovenian translation
+
+M	po/sl.po
+
+commit a728376835fdd39fa505acb84584f7d2600801f2
+Author: Luca Ferretti <elle.uca@libero.it>
+Date:	2009-09-18
+
+    Updated Italian translation
+
+M	po/it.po
+
+commit a8097e57788ad735227489e6c51d06bedc796889
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-09-18
+
+    Don't load files for thumbnailing that we can't thumbnail anyway
+
+    When zooming out we read the real image and use that as the thumbnail.
+    However, we should only do this for files gdk-pixbuf can read as other
+    things can't be read anyway and may potentially be very large (such as
+    videos) since the thumbnail size limit only applies for images.
+
+M	libnautilus-private/nautilus-file.c
+M	libnautilus-private/nautilus-thumbnails.c
+M	libnautilus-private/nautilus-thumbnails.h
+
+commit 4a88ecde61a52ac058999d95388ade9f668482d4
+Author: Maxim V. Dziumanenko <dziumanenko@gmail.com>
+Date:	2009-09-17
+
+    Added Ukrainian translation
+
+M	po/uk.po
+
+commit 51a2a0abd0bd3f6f36737b5afef3ff49a7fa602c
+Author: Denis ARNAUD <darnaud@src.gnome.org>
+Date:	2009-09-17
+
+    Updated breton translation
+
+M	po/br.po
+
+commit 5d641153c201f4cbc4d62ac10eb2437a8be5fb78
+Author: Mohammad Anwari <mdamt@mnots.eu>
+Date:	2009-09-16
+
+    Updated Indonesian translation by Andika Triwidada
+
+M	po/id.po
+
+commit adc53a499c5c143612d7e9b22340efc38240da1d
+Author: Ilkka Tuohela <hile@iki.fi>
+Date:	2009-09-15
+
+    Updated Finnish translation
+
+M	po/fi.po
+
+commit b5af4e6c9c6af492210514af922aa0ed4029dce6
+Author: Ilkka Tuohela <hile@iki.fi>
+Date:	2009-09-15
+
+    Updated Finnish translation
+
+M	po/fi.po
+
+commit 8da7fdac2375f5b5d0354926b6c130ced602aaaa
+Author: Rajesh Ranjan <rranjan@rranjan.csb>
+Date:	2009-09-15
+
+    hindi update by Rajesh Ranjan
+
+M	po/hi.po
+
+commit ba75188ad883fc3be36ebad0740512b03a6e373c
+Author: Sweta Kothari <swkothar@redhat.com>
+Date:	2009-09-15
+
+    Updated Gujarati Translations
+
+M	po/gu.po
+
+commit 43275654dc3b762841339f2771137d8013f0fe43
+Author: Astur <malditoastur@gmail.com>
+Date:	2009-09-14
+
+    Updated Asturian translation
+
+M	po/ast.po
+
+commit bd87d7555759021a012691d59d8707c4118a17c7
+Author: Gil Forcada <gforcada@gnome.org>
+Date:	2009-09-14
+
+    Minor fix to Catalan translation
+
+M	po/ca.po
+
+commit 96781b9d29259e175f73b87a30eaadf1e12c7490
+Author: Carles Ferrando <carles.ferrando@gmail.com>
+Date:	2009-09-14
+
+    Updated Catalan (Valencian) translation
+
+M	po/ca@valencia.po
+
+commit d6b8cb28c7208e0776bb483cde464472249c73ba
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-09-14
+
+    Avoid refing NULL icons
+
+M	src/file-manager/fm-directory-view.c
+
+commit eb05225a794de9c7b9326d1e1c56f54902bb6bb5
+Author: Kjartan Maraas <kmaraas@gnome.org>
+Date:	2009-09-14
+
+    Update Norwegian bokmål translation.
+
+M	po/nb.po
+
+commit 58a9e227e519369bca5c7c9897e386110bdda242
+Author: Ani <peter.ani@gmail.com>
+Date:	2009-09-14
+
+    Updaeted Malayalam Translations
+
+M	po/ml.po
+
+commit 4fb28a5541e564adff7f3a03582c2cb7ed4e294f
+Author: Lucian Adrian Grijincu <lucian.grijincu@gmail.com>
+Date:	2009-09-14
+
+    Updated Romanian translation
+
+M	po/ro.po
+
+commit 979be859028ba20384eee4f907fc647a060cb9fc
+Author: Ilkka Tuohela <hile@iki.fi>
+Date:	2009-09-13
+
+    Updated Finnish translation
+
+M	po/fi.po
+
+commit 78244d5d698786a98d00ef1513e8294825b8813c
+Author: Bruce Cowan <bcowan@fastmail.co.uk>
+Date:	2009-09-12
+
+    Updated British English translation
+
+M	po/en_GB.po
+
+commit e8610aaf1e276993a9942697decc4dc81a5c0168
+Author: Ask H. Larsen <asklarsen@gmail.com>
+Date:	2009-09-12
+
+    Updated Danish translation
+
+M	po/da.po
+
+commit da24fa0b829c31c4417fed03374b4ad4f63392e8
+Author: Reinout van Schouwen <reinouts@gnome.org>
+Date:	2009-09-12
+
+    * 2009-09-12  Reinout van Schouwen <reinouts@gnome.org>
+
+	- po/nl.po: Updated Dutch translation
+
+M	po/nl.po
+
+commit 48744242700d5dc9de21ef6c33df8eedb757b715
+Author: Miloš Popović <mpopovic@src.gnome.org>
+Date:	2009-09-11
+
+    Fixes in Serbian translation
+
+M	po/sr.po
+M	po/sr@latin.po
+
+commit 02ea89fd4f92faade026de9463aca4171f4c04d1
+Author: Gabor Kelemen <kelemeng@gnome.hu>
+Date:	2009-09-11
+
+    Updated Hungarian translation
+
+M	po/hu.po
+
+commit 8c636df9374993990ba8a23bbcb986e572508510
+Author: Žygimantas Beručka <zygis@gnome.org>
+Date:	2009-09-10
+
+    Updated Lithuanian translation
+
+M	po/lt.po
+
+commit 46aefc46372624957509f971a325e06fe8249c21
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-09-10
+
+    Make the desktop window native so the backing pixmap is drawn by X
+
+    Without this X draws the toplevel window background and then the
+    real background is drawn from exposes, which doesn't look nice.
+    Fixes bug #593658
+
+M	libnautilus-private/nautilus-icon-container.c
+
+commit 594f76e9231eeadfc7972560cf162e921d66aac6
+Author: Denis ARNAUD <darnaud@src.gnome.org>
+Date:	2009-09-09
+
+    Updated breton translation
+
+M	po/br.po
+
+commit d67e3e2377229e19128a2405b70580448fc5e487
+Author: Sweta Kothari <swkothar@redhat.com>
+Date:	2009-09-09
+
+    Updated Gujarati Translations
+
+M	po/gu.po
+
+commit b6e45ba165064f508aedad4212759700f0b99f7d
+Author: A S Alam <aalam@users.sf.net>
+Date:	2009-09-09
+
+    Updaitng for Punjabi
+
+M	po/pa.po
+
+commit 714e8534c90addab5b795cc39c98142ddea17242
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:	2009-09-09
+
+    Updated Polish translation
+
+M	po/pl.po
+
+commit e6e10b6facdd8a7058fa5c283462c9f4777a1079
+Author: Sandeep Shedmake <sshedmak@redhat.com>
+Date:	2009-09-08
+
+    Updated Marathi Translations
+
+M	po/mr.po
+
+commit 21e5e7d3898764a8d493dede40606a9b9e6aa7aa
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-09-08
+
+    Free get_types_table internal hashtable on exit
+
+M	libnautilus-private/nautilus-thumbnails.c
+
+commit 5b075cfa665d07ee6c57e68f6f67aaca76a3b308
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-09-08
+
+    Fix minor leak
+
+M	src/nautilus-application.c
+
+commit d442315c303db2def885a00d0abed257156185ce
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-09-08
+
+    Free return value from nautilus_file_get_metadata_list
+
+M	src/file-manager/fm-list-view.c
+
+commit 75298a3ded74e42b047f95f0746ea3dca8e0a6b7
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-09-08
+
+    Print leaked unique eel_ref_str:s at exit
+
+M	eel/eel-string.c
+
+commit b698cf1932da077f07d99966a4c61568a1ae081e
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-09-08
+
+    Fix threadsafety issue in eel_ref_str_unref
+
+    Its not safe to just decrement count if we didn't read a 1, as we
+    could race with another decrement.
+
+M	eel/eel-string.c
+
+commit 26714114eefe841c4b3eaa5a3a93b50ec69f76a8
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-09-08
+
+    Don't leak list of gconf entries
+
+M	libnautilus-private/nautilus-desktop-directory-file.c
+
+commit 2434bd43cd43eb8ba97b1a956e4b3cd734cf2a91
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-09-07
+
+    Fix usage of sink, fixing many recently introduced leaks.
+
+    The conversion away from gtk_object_sink was done wrongly
+    causing lots of leaks. fix this.
+
+M	eel/eel-background.c
+M	eel/eel-gtk-extensions.c
+M	libnautilus-private/nautilus-dnd.c
+M	src/file-manager/fm-list-view.c
+M	src/file-manager/fm-tree-view.c
+M	src/nautilus-emblem-sidebar.c
+M	src/nautilus-history-sidebar.c
+M	src/nautilus-information-panel.c
+M	src/nautilus-notes-viewer.c
+M	src/nautilus-places-sidebar.c
+M	src/nautilus-spatial-window.c
+
+commit b4cd0d66db105822bfa5531a146428b548aff369
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-09-07
+
+    Update to latest foocanvas
+
+    This has some cleanups and fixes a memory leak that was introduced
+    in the eel copy by removing gtk_object_sink.
+
+M	eel/eel-canvas-rect-ellipse.c
+M	eel/eel-canvas-rect-ellipse.h
+M	eel/eel-canvas-util.c
+M	eel/eel-canvas.c
+M	eel/eel-canvas.h
+
+commit b17f8f7995aa1ba2b62d8272436d761bc1600bb1
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-09-07
+
+    Don't leak file metadata
+
+M	libnautilus-private/nautilus-file.c
+
+commit 7c2c5f904d183d510e9fb4f4ac07fe7660274692
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-09-07
+
+    Free "remaining" returned from GOption
+
+M	src/nautilus-main.c
+
+commit 26a91c8e225f01363976485c782840135d50e6d8
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-09-07
+
+    Centralize extra view ref and sink if required
+
+    Doing this in only one place makes sense as its clearer.
+    Previously we ref:ed one extra time for the window->view ref but left
+    the floating ref to be taked when adding the widget to a parent.
+    This breaks when we free the view before adding it to a parent, so
+    we need to properly sink it.
+
+M	libnautilus-private/nautilus-view-factory.c
+M	src/file-manager/fm-desktop-icon-view.c
+M	src/file-manager/fm-empty-view.c
+M	src/file-manager/fm-icon-view.c
+M	src/file-manager/fm-list-view.c
+
+commit c302620c144c7968c7ae35b45ab55a3124fd2923
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-09-07
+
+    post release version bump
+
+M	configure.in
+
+commit d0a6955e983ba112a65140ce3b55a7dd953fd8e8
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-09-07
+
+    Update NEWS
+
+M	NEWS
+
+commit bd108f3700594e5c859d89287a59733a5585e4d9
+Author: Padraig O'Briain <padraig.obriain@sun.com>
+Date:	2009-09-07
+
+    Don't crash on NULL gconf value
+
+    This fixes bug #589520
+
+M	libnautilus-private/nautilus-desktop-directory-file.c
+
+commit 02a7a84229063f329731d3db61184207a91bf12e
+Author: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>
+Date:	2009-09-06
+
+    Updated Traditional Chinese translation(Hong Kong and Taiwan)
+
+M	po/zh_HK.po
+M	po/zh_TW.po
+
+commit 3af7944871692b9e0c0754ed5351ac24d2a6f9ff
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:	2009-09-05
+
+    Updated Arabic translation
+
+M	po/ar.po
+
+commit 41a15a48a2d452078ae7845374ad9577b30e8155
+Author: Ivar Smolin <okul@linux.ee>
+Date:	2009-09-05
+
+    Updating Estonian translation
+
+M	po/et.po
+
+commit 7553bdccaddb56be2b156dfcd1e409ea30b870a7
+Author: Mario Blättermann <mariobl@gnome.org>
+Date:	2009-09-04
+
+    Updated German translation
+
+M	po/de.po
+
+commit 13ecc3e0eef4d9267f9919cd79180c0ed4ce4bbf
+Author: Duarte Loreto <happyguy_pt@hotmail.com>
+Date:	2009-09-04
+
+    Updated Portuguese translation
+
+M	po/pt.po
+
+commit 2a562f03810a31a0cd2be36faff5059dab2b8fe2
+Author: Miloš Popović <mpopovic@src.gnome.org>
+Date:	2009-09-01
+
+    Updated Serbian translation
+
+M	po/sr.po
+M	po/sr@latin.po
+
+commit 3901a97853dad9bf2d586e401a2542aa86703e65
+Author: Kjartan Maraas <kmaraas@gnome.org>
+Date:	2009-09-01
+
+    Update Norwegian bokmål translation.
+
+M	po/nb.po
+
+commit 40164f40de5bcfec618da3f200eff5d2371f4bde
+Author: Shankar Prasad <svenkate@redhat.com>
+Date:	2009-09-01
+
+    Updated Kannada(kn) translation
+
+M	po/kn.po
+
+commit e9b017891f7ab2586b92f4111637b2d02b0f4a51
+Author: krishnababu k <kkrothap@redhat.ocm>
+Date:	2009-08-31
+
+    Updated Telugu Translations
+
+M	po/te.po
+
+commit 2cf936c4105f88a953f91c8bdf37d65553681684
+Author: Joan Duran <jodufi@gmail.com>
+Date:	2009-08-30
+
+    Updated Catalan translation
+
+M	po/ca.po
+
+commit 4d9e7a5bf3d180ae47b789b90ee56fc2cbde24c3
+Author: Baris Cicek <baris@teamforce.name.tr>
+Date:	2009-08-30
+
+    Updated Turkish translation.
+
+M	po/tr.po
+
+commit cf32d3a9429a08fa5fd9557c57e896d85064e9da
+Author: Inaki Larranaga Murgoitio <dooteo@zundan.com>
+Date:	2009-08-29
+
+    Updated Basque language
+
+M	po/eu.po
+
+commit bd4180156f506861b335a71a4d6e54886a237527
+Author: Bruno Brouard <annoa.b@gmail.com>
+Date:	2009-08-28
+
+    Updated French translation
+
+M	po/fr.po
+
+commit 04e3be13647469de3fe97c15b2fab28eb1cdd81c
+Author: Inaki Larranaga Murgoitio <dooteo@zundan.com>
+Date:	2009-08-27
+
+    Updated Basque language
+
+M	po/eu.po
+
+commit 542f56ecb2af09c78dd7507d6e9f10b96d4d2e34
+Author: Runa Bhattacharjee <runab@redhat.com>
+Date:	2009-08-27
+
+    Updated Bengali India Translations
+
+M	po/bn_IN.po
+
+commit e6ef2d96f6adc507425123716961aa48281af83d
+Author: A <awalton@gnome.org>
+Date:	2009-08-27
+
+    Fix test in uninhibit code
+
+M	libnautilus-private/nautilus-file-utilities.c
+
+commit bf6bfde36bcadf43a39fb095650b7fc78741d62a
+Author: Matthias Clasen <mclasen@redhat.com>
+Date:	2009-08-26
+
+    Fix a duplicate id in a .ui file
+
+    This caused nautilus-file-management-properties to crash.
+
+M	src/nautilus-file-management-properties.ui
+
+commit 064086ef68a0692ac9050b7a0d3ded4a836c8180
+Author: Marcus Carlson <marcus@mejlamej.nu>
+Date:	2009-08-26
+
+    Always show app icon for open-with in the popup menu as in the
+    normal menu
+
+    Fixes bug #591663.
+
+M	src/file-manager/fm-directory-view.c
+
+commit 3bd3f5f4d7a8ef10c6133c5957025df1560e9185
+Author: ifelix <ifelix@redhat.com>
+Date:	2009-08-26
+
+    Updated Tamil Translations
+
+M	po/ta.po
+
+commit b151573894ee19b4c13f3d35ac5cac7660caee63
+Author: Henrique P Machado <zehrique@gmail.com>
+Date:	2009-08-24
+
+    Updated Brazilian Portuguese translation.
+
+M	po/pt_BR.po
+
+commit 324e267fc916d5f16e505c2f57a69c271c1388ee
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-08-24
+
+    Post release version bump
+
+M	configure.in
+
+commit c685eae6206409ca4bbcec4c74367e5295f40461
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-08-24
+
+    Update NEWS
+
+M	NEWS
+
+commit c1755706945092334af274f3a88049976baa4763
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-08-24
+
+    Bump version to 2.27.91
+
+M	configure.in
+
+commit d8337a4b7969b43bf5712cd5e85dc5f936ed5044
+Author: Ryan Lortie <desrt@desrt.ca>
+Date:	2009-08-22
+
+    Cancel audio preview when deleting the file
+
+    Fixes #137500.
+
+M	src/file-manager/fm-icon-view.c
+
+commit b9cd9a5810e044c9351d2408186fb135f4452635
+Author: Jamil Ahmed <itsjamil@gmail.com>
+Date:	2009-08-24
+
+    Updated Bengali translation
+
+M	po/bn.po
+
+commit 8ddb1d53eaa01f4c076c4d96e8da1a9a812e303b
+Author: Changwoo Ryu <cwryu@debian.org>
+Date:	2009-08-23
+
+    Update Korean translation
+
+M	po/ko.po
+
+commit da36928ac4d0989d2b6c3d54f7dc522fca7491ab
+Author: Seán de Búrca <leftmostcat@gmail.com>
+Date:	2009-08-22
+
+    Updated Irish translation
+
+M	po/ga.po
+
+commit 97915f97bcbd047de2a5fd4b6bf25b01436085d3
+Author: Alexander Shopov <ash@contact.bg>
+Date:	2009-08-22
+
+    Updated Bulgarian translation
+
+M	po/bg.po
+
+commit 4a7af52ab6f964b9174b59e3f71252447158ffa4
+Author: Antón Méixome <meixome@mancomun.org>
+Date:	2009-08-19
+
+    Updated Galician Translation
+
+M	po/gl.po
+
+commit 72f65592a84cb8e9ad2ccaa6bbfd7fe4fbe7371b
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-08-18
+
+    Migrate old nautilus metadata to gvfs on startup
+
+    If ~/.nautilus/metadata/migrated-to-gvfs doesn't exist, migrate and
+    create it.
+
+M	src/Makefile.am
+M	src/nautilus-application.c
+
+commit 1d14824dc8ab6f1f8573b07c11ce437ae22dc77b
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-08-17
+
+    Add nautilus-convert-metadata tool
+
+    This can be used to convert old-style nautilus metafiles to gvfs
+    metadata.
+
+M	src/Makefile.am
+A	src/nautilus-convert-metadata.c
+
+commit a557cf30fe1f3761901a7248106840add2c1d105
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-08-18
+
+    Move NAUTILUS_DESKTOP_METADATA_GCONF_PATH to nautilus-metadata.h
+
+    Need this in the metadata conversion code
+
+M	libnautilus-private/nautilus-desktop-directory-file.c
+M	libnautilus-private/nautilus-metadata.h
+
+commit 7c316ae074658c8927e48ea00f4305767ea9f7dd
+Author: A. Walton <awalton@gnome.org>
+Date:	2009-08-13
+
+    Bug 587316 – Truncate file names when deleting
+
+    Files with extremely long file names could cause the dialog box to
+    become wider than the screen. Based on a patch contributed by
+    Marcus Carlson.
+
+M	libnautilus-private/nautilus-file-operations.c
+
+commit ce36628b3d615204eebd60a9df67b88857321965
+Author: Yaron Shahrabani <sh.yaron@gmail.com>
+Date:	2009-08-14
+
+    Updated Hebrew translation
+
+M	po/he.po
+
+commit e0446d33be8ce22d1925c60db6a9b26c232020a8
+Author: Jochen Skulj <jochen@jochenskulj.de>
+Date:	2009-08-13
+
+    Updated German translation
+
+M	po/de.po
+
+commit 39b18f636baddcc3de5866ef3dbb6d66dc344a37
+Author: Rajesh Ranjan <rranjan@rranjan.csb>
+Date:	2009-08-13
+
+    Updated Hindi Translations
+
+M	po/hi.po
+
+commit bbdb3b31455d462c18afa3764293f06fb81df54b
+Author: Daniel Nylander <po@danielnylander.se>
+Date:	2009-08-13
+
+    Updated Swedish translation
+
+M	po/sv.po
+
+commit 477fdafe22aa0e3cb78ab73c7ec4e205468c0a75
+Author: Matthias Clasen <mclasen@redhat.com>
+Date:	2009-08-12
+
+    Fix a typo
+
+M	libnautilus-private/apps_nautilus_preferences.schemas.in
+
+commit e8f0c90ab9444511311f300f6b0596df01c38f1e
+Author: Seán de Búrca <leftmostcat@gmail.com>
+Date:	2009-08-11
+
+    Updated Irish translation
+
+M	po/ga.po
+
+commit 13b85463fb7b9af0faac01b30e8459545e87b6f0
+Author: Mattias Põldaru <mahfiaz gmail com>
+Date:	2009-08-11
+
+    Updating Estonian translation
+
+M	po/et.po
+
+commit fdb2ccedb2bfd3b2d6dfd5759913875b8d93834a
+Author: A. Walton <awalton@gnome.org>
+Date:	2009-08-10
+
+    Fix unintiallized GError in power management
+
+M	libnautilus-private/nautilus-file-utilities.c
+
+commit f77c52ec952f25170338e6e896af035b4ef55cfe
+Author: Jorge González <jorgegonz@svn.gnome.org>
+Date:	2009-08-10
+
+    Updated Spanish translation
+
+M	po/es.po
+
+commit 37e7ceca45aea48129cf55ea2583f23330d26b91
+Author: A. Walton <awalton@gnome.org>
+Date:	2009-08-10
+
+    Bug 334806 – Inhibit power-manager when copying files
+
+    Introduces code to inhibit GNOME power manager
+    whenever a file operation which may not complete
+    quickly is running.
+
+M	libnautilus-private/nautilus-file-operations.c
+M	libnautilus-private/nautilus-file-utilities.c
+M	libnautilus-private/nautilus-file-utilities.h
+
+commit 4dd0fdef1d77cb6b9be83348ff5c00293e14a991
+Author: Ivar Smolin <okul@linux.ee>
+Date:	2009-08-10
+
+    Updating Estonian translation
+
+M	po/et.po
+
+commit fa1d8989b1b3e4d18c3f4c097d57c76ff86a7387
+Author: Luca Ferretti <elle.uca@libero.it>
+Date:	2009-08-09
+
+    Remove unused variable to fix the build
+
+M	src/nautilus-navigation-window-menus.c
+
+commit 3c5be2ea6403ad071da5e350332e2890d9d53994
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:	2009-08-08
+
+    Updated Arabic translation
+
+M	po/ar.po
+
+commit eb585679b6e4fad7d252a7458177c4e0a8468298
+Author: Matthias Clasen <mclasen@redhat.com>
+Date:	2009-08-08
+
+    Always show icons in places menu in spatial mode.
+
+    Part of bug #590647.
+
+M	src/nautilus-spatial-window.c
+
+commit 826d5237d2ea179006b62def4db376544e74d764
+Author: Marcus Carlson <gnomebugzilla@mejlamej.nu>
+Date:	2009-08-08
+
+    Always show icons in the history and go menu.
+
+    Part of bug #590647.
+
+M	src/nautilus-navigation-window-menus.c
+M	src/nautilus-window-menus.c
+
+commit 9cba51e5cb8827997eb4203c6eed4614efa34aaa
+Author: Marcus Carlson <gnomebugzilla@mejlamej.nu>
+Date:	2009-08-08
+
+    Always show application icons in popup menus.
+
+    Part of bug #590647.
+
+M	src/file-manager/fm-directory-view.c
+
+commit 1604ee0ceb8026aff744981b893d8fc8da25ec6c
+Author: Seán de Búrca <leftmostcat@gmail.com>
+Date:	2009-08-06
+
+    Updated Irish translation
+
+M	po/ga.po
+
+commit 339017547f1aa41d90cf31a6b985588f3ff64e4a
+Author: Antón Méixome <meixome@mancomun.org>
+Date:	2009-08-06
+
+    Updated Galician Translation
+
+M	po/gl.po
+
+commit 47af29868f527a93acb1822b6bdb2537253a387e
+Author: Kjartan Maraas <kmaraas@gnome.org>
+Date:	2009-08-06
+
+    Updated Norwegian bokmål translation.
+
+M	po/nb.po
+
+commit a0b11f325a221c7ca46811ada00bad1035e4857a
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:	2009-08-06
+
+    Misc. fixes to Arabic translation
+
+M	po/ar.po
+
+commit 85bb10a2b4f7230e7a0aa5b9945d155c1a21b2b4
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:	2009-08-05
+
+    Updated Arabic translation
+
+M	po/ar.po
+
+commit f8f6a95bc05353b4a68c07fc710742b9bcdc7d0d
+Author: A. Walton <awalton@gnome.org>
+Date:	2009-08-03
+
+    Fix crash in connect server dialog
+
+    Under custom locations, entering no URI will crash.
+
+M	src/nautilus-connect-server-dialog.c
+
+commit cfa61d576da08590bec118ce1ed03e7189a974b2
+Author: A. Walton <awalton@gnome.org>
+Date:	2009-08-03
+
+    Reorder assignments in mime application chooser
+
+    Writing over toggle_renderer with the wrong cell renderer.
+
+M	libnautilus-private/nautilus-mime-application-chooser.c
+
+commit a8ca44f54aea29ccb2eb0163f8ffe670fd6761b1
+Author: A. Walton <awalton@gnome.org>
+Date:	2009-08-03
+
+    Reverse back/forward mouse button sense.
+
+    Be consistent with Firefox, etc.
+
+M	libnautilus-private/apps_nautilus_preferences.schemas.in
+M	libnautilus-private/nautilus-global-preferences.c
+M	src/nautilus-navigation-window.c
+
+commit aa5dbe04bc2d92e2603b34d44f486fd2bae95169
+Author: Seán de Búrca <leftmostcat@gmail.com>
+Date:	2009-07-31
+
+    Updated Irish translation
+
+M	po/ga.po
+
+commit 6d648632b8978590befcd867bd2c9920b6aa49ff
+Author: Alan Monfort <alan.monfort@free.fr>
+Date:	2009-07-31
+
+    Updated breton translation
+
+M	po/br.po
+
+commit 838d31d11e3fed0d98642397c9d986ddd5bea390
+Author: Denis Arnaud <darnaud@src.gnome.org>
+Date:	2009-07-30
+
+    Updated breton translation
+
+M	po/br.po
+
+commit e7d2f70203673d9a294460df164aec295db17234
+Author: Denis Arnaud <darnaud@src.gnome.org>
+Date:	2009-07-30
+
+    Updated breton translation
+
+M	po/br.po
+
+commit 97d348f792a2659fbb88de17d25e83c93b14414c
+Author: Vincent Untz <vuntz@gnome.org>
+Date:	2009-07-28
+
+    Respect /desktop/gnome/lockdown/disable_command_line
+
+    We need to show/hide the "New Launcher" menu item in the context
+    menu, depending on this gconf key.
+
+M	libnautilus-private/nautilus-global-preferences.c
+M	libnautilus-private/nautilus-global-preferences.h
+M	src/file-manager/fm-actions.h
+M	src/file-manager/fm-desktop-icon-view.c
+M	src/file-manager/fm-directory-view.c
+
+commit 359fa218a1a890bb87fb331acc30d62b57bc7c61
+Author: Ivar Smolin <okul@linux.ee>
+Date:	2009-07-27
+
+    Updating Estonian translation
+
+M	po/et.po
+
+commit aac26f4c0fce20e7cac87ca51c0629458e804ee8
+Author: Mattias Põldaru <mahfiaz gmail com>
+Date:	2009-07-22
+
+    Updating Estonian translation
+
+M	po/et.po
+
+commit 44c05bbc866fb4430a16b169aa3854bab1af6555
+Author: drtvasudevan <agnihot3@gmail.com>
+Date:	2009-07-21
+
+    Updated Tamil translation
+
+M	po/ta.po
+
+commit c0c9bbc96228a8864eda9d0b7f4c82c7d1c0dba4
+Author: Ivar Smolin <okul@linux.ee>
+Date:	2009-07-20
+
+    Updating Estonian translation
+
+M	po/et.po
+
+commit 2a94803b44010e3c47a9f7b94894fab8d6062abc
+Author: Jaap A. Haitsma <jaap@haitsma.org>
+Date:	2009-07-18
+
+    Fix handling of small images/icons
+
+    Small images with an alpha plane don't get a frame
+    Use different scaling strategy for small images. Small images/icons
+    won't get up scaled in default zoom view. They are shown in their
+    actual
+    Fixes bug #585186
+
+M	libnautilus-private/nautilus-file.c
+
+commit a8f82a8a00f672a3111d97070c3a6f34e2b46c90
+Author: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>
+Date:	2009-07-18
+
+    Updated Traditional Chinese translation(Hong Kong and Taiwan)
+
+M	po/zh_HK.po
+M	po/zh_TW.po
+
+commit bd6db659cb232d8b8f81a9ada748025aa1d16fff
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-07-14
+
+    Clean up metadata key names now that they are public
+
+    Prefix all internal keys with "nautilus-".
+    Use dash, not underscore as delimitor (this is what gio file
+    attrs use)
+    Rename "keyword" to "emblems"
+    Rename "default_component" to "nautilus-default-view"
+
+M	libnautilus-private/nautilus-file.c
+M	libnautilus-private/nautilus-metadata.c
+M	libnautilus-private/nautilus-metadata.h
+M	src/nautilus-window-manage-views.c
+
+commit c2951134aac83f4e8194e7cb71a92b5f9d273100
+Author: Sweta Kothari <swkothar@redhat.com>
+Date:	2009-07-14
+
+    Updated Gujarati Translations
+
+M	po/gu.po
+
+commit 53bcaac5fd2cf03f686f19dbdc9d889480cd8709
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-07-14
+
+    Post-release version bump
+
+M	configure.in
+
+commit 608b7f5c2ab1c6e9c0d011e3fef3b506afa5f8ba
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-07-14
+
+    Update for 2.27.4
+
+M	NEWS
+M	configure.in
+
+commit e4b5573bec0215006201b9a0dda60888a32debe6
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-07-14
+
+    Comment out the metadata tests for now
+
+M	libnautilus-private/nautilus-directory.c
+
+commit 91cec6f5e6bbc672d2cebef162ea797eb5e9d55d
+Author: Sweta Kothari <swkothar@redhat.com>
+Date:	2009-07-13
+
+    Updated Gujarati Translations
+
+M	po/gu.po
+
+commit 9ca82f0443f49bb80beb050f1d1bb3ef2a338698
+Author: Maxim V. Dziumanenko <dziumanenko@gmail.com>
+Date:	2009-07-09
+
+    Updated Ukrainian translation
+
+M	po/uk.po
+
+commit 3bd36d1a3b6f576e124a41800d7138cbfa34782f
+Author: Maxim V. Dziumanenko <dziumanenko@gmail.com>
+Date:	2009-07-09
+
+    Updated Ukrainian translation
+
+M	po/uk.po
+
+commit fd9df908248be20bc5f79def1dd96a45bb9f56c8
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-07-09
+
+    Don't force no horizontal scrollbar in the note viewer
+
+    This causes issues with long words in the notes viewer, as the window
+    will grow bigger along with the word.
+    Patch by Luke Symes, fix bug #399018.
+
+M	src/nautilus-notes-viewer.c
+
+commit c1b58565da21a6d9e95dc920afd632da6e906fc9
+Author: drtvasudevan <agnihot3@gmail.com>
+Date:	2009-07-09
+
+    Updated Tamil translation
+
+M	po/ta.po
+
+commit 560e736891e9268c73171ef3afbbc5c2bde819b9
+Author: Jorge González <jorgegonz@svn.gnome.org>
+Date:	2009-07-08
+
+    Updated Spanish translation
+
+M	po/es.po
+
+commit 72a17d86468291eb64fdc549753836e76e3add6a
+Author: Daniel Nylander <po@danielnylander.se>
+Date:	2009-07-08
+
+    Updated Swedish translation
+
+M	po/sv.po
+
+commit 2eb7e673837b32fe8c7d9b4431fd76213a908a3a
+Author: Wang Yan <Michael.wang@turbolinux.com.cn>
+Date:	2009-07-04
+
+    Don't display the timeout dialog with broken launchers
+
+    Don't display the timed wait dialog if we're already reporting
+    a broken
+    link to the user. Fix bug #579165.
+
+    Signed-off-by: Wang Yan <Michael.wang@turbolinux.com.cn>
+
+M	libnautilus-private/nautilus-mime-actions.c
+
+commit 45c928d3cf112f22d69b25299898301c54d9e961
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-07-08
+
+    Use application icons in the context menu
+
+    If it's possibile, use the application icons in the open with submenu.
+    This also removes quotation marks and useless duplicate "Open With"
+    strings from the submenu.
+    Patch by Marcus Carlson, fixes bug #587533 and #546916.
+
+M	src/file-manager/fm-directory-view.c
+
+commit 4b434c4f73b56a92ff4bf50435487357719eebaf
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-07-08
+
+    [build] bump up the required version of GLib
+
+M	configure.in
+
+commit cf5538067776605cb031a58ce2f77271375db498
+Author: David Zeuthen <davidz@redhat.com>
+Date:	2009-06-30
+
+    Bug 587486 – Pass GMountOperation to unmount/eject/stop ops
+
+    - Port everything to use _with_operation() variants of unmount/eject
+       methods
+
+     - This includes changing the NautilusFile a bit; see the patch
+       for details
+
+     - Add support for g_drive_can_start_degraded() so we offer
+       to start (degraded) drives even when g_drive_can_start()
+       returns FALSE
+
+     - Also add support for new mountable::* attributes so we can
+       have "Detect Media" items in the context menu when right-clicking
+       mounts/volumes/drives in computer:/// and on the desktop
+
+M	libnautilus-private/nautilus-desktop-icon-file.c
+M	libnautilus-private/nautilus-file-operations.c
+M	libnautilus-private/nautilus-file-private.h
+M	libnautilus-private/nautilus-file.c
+M	libnautilus-private/nautilus-file.h
+M	libnautilus-private/nautilus-vfs-file.c
+M	src/file-manager/fm-actions.h
+M	src/file-manager/fm-directory-view.c
+M	src/file-manager/nautilus-directory-view-ui.xml
+M	src/nautilus-application.c
+M	src/nautilus-places-sidebar.c
+
+commit 8b7599a8897e5f5314b8637e7523f35285db118c
+Author: Daniel Nylander <po@danielnylander.se>
+Date:	2009-07-07
+
+    Updated Swedish translation
+
+M	po/sv.po
+
+commit 547fa8e9f8fe654b92d5b8b0f2dcc074a7ad91d8
+Author: Claude Paroz <claude@2xlibre.net>
+Date:	2009-07-07
+
+    Updated French translation
+
+    Contributed by Laurent Coudeur and Claude Paroz
+
+M	po/fr.po
+
+commit 9da3dacb61a5f70b0b5a62c57f3278169fdea56a
+Author: Jorge González <jorgegonz@svn.gnome.org>
+Date:	2009-07-07
+
+    Updated Spanish translation
+
+M	po/es.po
+
+commit f24c7689e1efb27dd2953bdee7de8c02f183d9be
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-06-30
+
+    Properly escape names used as gconf keys
+
+M	libnautilus-private/nautilus-desktop-directory-file.c
+
+commit b8995fce159472dac07666dfb4d7e3ff1412403a
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-06-29
+
+    Support metadata for the virtual desktop icons
+
+M	libnautilus-private/nautilus-desktop-directory-file.c
+M	libnautilus-private/nautilus-desktop-directory-file.h
+M	libnautilus-private/nautilus-desktop-icon-file.c
+M	libnautilus-private/nautilus-global-preferences.c
+
+commit 02f908f3d864f1f3bf0729158907f312e0306c05
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-06-29
+
+    Move metadata setting to a NautilusFile vfunc
+
+    This allows non-vfs backends to implement metadata
+
+M	libnautilus-private/nautilus-file-private.h
+M	libnautilus-private/nautilus-file.c
+M	libnautilus-private/nautilus-file.h
+M	libnautilus-private/nautilus-vfs-file.c
+
+commit 28d5e790dbe7752de156e01610c3e5c354064192
+Author: Mattias Põldaru <mahfiaz gmail com>
+Date:	2009-06-26
+
+    Updating Estonian translation
+
+M	po/et.po
+
+commit 65425491f90194e3034b5b49e0e333b5717d1776
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-06-26
+
+    Forgot to remove some references to removed symbols
+
+M	libnautilus-private/nautilus-file-changes-queue.c
+
+commit 7874f2d9422618107edabd7056b7167844c389ca
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-06-25
+
+    Support unsetting metadata
+
+M	libnautilus-private/nautilus-file.c
+
+commit 99b68670ad94bfb5db1b162ae0d84e27f226d18f
+Author: Mattias Põldaru <mahfiaz gmail com>
+Date:	2009-06-25
+
+    Updating Estonian translation
+
+M	po/et.po
+
+commit 22a457fd40d09139e5d7bbe6404006d0e091bc15
+Author: drtvasudevan <agnihot3@gmail.com>
+Date:	2009-06-24
+
+    Updated Tamil translation
+
+M	po/ta.po
+
+commit 37be3809bc0d25d28298b38bc0b893a6fd3a665f
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-06-23
+
+    Remove all traces of former nautilus metadata code
+
+M	libnautilus-private/Makefile.am
+M	libnautilus-private/nautilus-directory-async.c
+M	libnautilus-private/nautilus-directory-background.c
+D	libnautilus-private/nautilus-directory-metafile.c
+D	libnautilus-private/nautilus-directory-metafile.h
+M	libnautilus-private/nautilus-directory-private.h
+M	libnautilus-private/nautilus-directory.c
+M	libnautilus-private/nautilus-file-attributes.h
+M	libnautilus-private/nautilus-file-changes-queue.c
+M	libnautilus-private/nautilus-file-changes-queue.h
+M	libnautilus-private/nautilus-file-operations.c
+M	libnautilus-private/nautilus-file-utilities.c
+M	libnautilus-private/nautilus-file.c
+M	libnautilus-private/nautilus-file.h
+M	libnautilus-private/nautilus-link.c
+D	libnautilus-private/nautilus-metafile.c
+D	libnautilus-private/nautilus-metafile.h
+M	libnautilus-private/nautilus-mime-actions.c
+M	src/file-manager/fm-directory-view.c
+M	src/file-manager/fm-properties-window.c
+M	src/nautilus-main.c
+M	src/nautilus-notes-viewer.c
+M	src/nautilus-sidebar-title.c
+M	src/nautilus-window-manage-views.c
+M	test/test-nautilus-directory-async.c
+
+commit fc4e74e6763000bac2a459e83811cf01e6cb7720
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-06-23
+
+    Use gvfs based metadata
+
+M	libnautilus-private/Makefile.am
+M	libnautilus-private/nautilus-file-private.h
+M	libnautilus-private/nautilus-file.c
+M	libnautilus-private/nautilus-file.h
+A	libnautilus-private/nautilus-metadata.c
+M	libnautilus-private/nautilus-metadata.h
+M	src/file-manager/fm-list-view.c
+
+commit c7b6875c98ecd25dc26853b783e1a4ffe96fab36
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-06-23
+
+    Add eel_g_strv_equal
+
+M	eel/eel-glib-extensions.c
+M	eel/eel-glib-extensions.h
+
+commit ffc93d52d4650e63e01b488ef582983919c89de3
+Author: A. Walton <awalton@gnome.org>
+Date:	2009-06-22
+
+    Another missed FreeBSD build fix.
+
+M	libnautilus-private/nautilus-metafile.c
+
+commit 08144422c582077664b878fecc9878fc785b94df
+Author: Petr Kovar <pknbe@volny.cz>
+Date:	2009-06-21
+
+    Fixed Czech translation by Lucas Lommer
+
+    Thanks goes to Vladimir Burian.
+
+M	po/cs.po
+
+commit 22c5e7beacd28a64b4ff82ad20df0c954128ba46
+Author: Jorge Gonzalez <jorgegonz@svn.gnome.org>
+Date:	2009-06-21
+
+    Updated Spanish translation
+
+M	po/es.po
+
+commit 104557839d2cfb375e5729e17c3fba3810f538e7
+Author: Ivar Smolin <okul@linux.ee>
+Date:	2009-06-19
+
+    Updating Estonian translation
+
+M	po/et.po
+
+commit dec816b65de82e832e29c0cea1a8c330ffa5954a
+Author: A. Walton <awalton@gnome.org>
+Date:	2009-06-19
+
+    Fix the build.
+
+    self_start_stop_type uninitialized in fm-directory-view.c
+
+M	src/file-manager/fm-directory-view.c
+
+commit bcf5f921cda6f582230d3d0707f93172c3fa65e6
+Author: A. Walton <awalton@gnome.org>
+Date:	2009-06-19
+
+    Bug 586346 – Build failure on FreeBSD
+
+    Wasn't the wrong number of arguments, it was the wrong
+    type of argument (time_t, not long). So we add a cast
+    to make it more explicit to the compiler there.
+
+M	libnautilus-private/nautilus-file.c
+
+commit 0fe78fa2ae3d1a1e46996cc27c66421965bce57c
+Author: A. Walton <awalton@gnome.org>
+Date:	2009-06-19
+
+    Bug 586346 – Build failure on FreeBSD
+
+    Use g_snprint() instead of snprintf().
+
+M	libnautilus-private/nautilus-file.c
+
+commit 66b53e82aa5d45cec89c99ab74e86caf2c49df00
+Author: David Zeuthen <davidz@redhat.com>
+Date:	2009-06-17
+
+    Bug 585591 – Starting/stopping drives
+
+    This is the Nautilus user for the new GIO API for starting/stopping
+    drives. See
+
+    http://bugzilla.gnome.org/show_bug.cgi?id=585591
+
+    for details.
+
+M	libnautilus-private/nautilus-file-private.h
+M	libnautilus-private/nautilus-file.c
+M	libnautilus-private/nautilus-file.h
+M	libnautilus-private/nautilus-mime-actions.c
+M	libnautilus-private/nautilus-vfs-file.c
+M	src/file-manager/fm-actions.h
+M	src/file-manager/fm-directory-view.c
+M	src/file-manager/nautilus-directory-view-ui.xml
+M	src/nautilus-places-sidebar.c
+
+commit 3af5d8c5bf61bdf206b9c79df0c27c0152b46496
+Author: Mattias Põldaru <mahfiaz gmail com>
+Date:	2009-06-18
+
+    Updating Estonian translation
+
+M	po/et.po
+
+commit 9ff24d6790da178fb8cba9c3c150a04ff4afea74
+Author: Ivar Smolin <okul@linux.ee>
+Date:	2009-06-17
+
+    Updating Estonian translation
+
+M	po/et.po
+
+commit 06e4eb732621b01c624b0e2665de523396e99f2f
+Author: Vincent Untz <vuntz@gnome.org>
+Date:	2009-06-17
+
+    Use gtk_cell_layout_get_cells instead of deprecated API
+
+M	src/nautilus-places-sidebar.c
+
+commit a2c338278cb82c4a2d8c4175d1db9ca7d7985d43
+Author: A. Walton <awalton@gnome.org>
+Date:	2009-06-17
+
+    Revert last commit as discussion in #gnome-hackers
+
+    Turns out, g_app_info_should_show() is really broken, as this hides
+    some apps we shouldn't be hiding. Wondering how we can unbreak this..
+
+M	libnautilus-private/nautilus-open-with-dialog.c
+
+commit e9d7b28a49d2afa5d67a34ef568a9e390df9a052
+Author: A. Walton <awalton@gnome.org>
+Date:	2009-06-17
+
+    Bug 586040 – "Open With" dialog duplicates
+
+    Turns out, Nautilus was showing GAppInfo's which shouldn't be
+    shown in the UI.
+
+M	libnautilus-private/nautilus-open-with-dialog.c
+
+commit b800160b430c17ddae5621a9af8b498d9092883d
+Author: A. Walton <awalton@gnome.org>
+Date:	2009-06-16
+
+    Bug 563906 – Grammatical Error in String
+
+    Fixes this bug.
+
+M	src/nautilus-window-manage-views.c
+
+commit 41975360a57115b5223e3466517df66b45c3fb63
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-06-15
+
+    Call g_reload_user_special_dirs_cache() when xdg-user-dirs change
+
+    This means we will get the new special file icon for the changed
+    files.
+
+    Also, invalidate the file when we change it ourself so that the icon
+    change is picked up.
+
+M	libnautilus-private/nautilus-file-utilities.c
+
+commit a1ea86bd6c3d1123463e377e362dfffd047ef6a5
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-06-15
+
+    Post release version bump
+
+M	configure.in
+
+commit e524b867b2653f6f92c8fb44f4b347b5fbc23c2c
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-06-15
+
+    Update NEWS for 1.3.1
+
+M	NEWS
+
+commit b3f20601fe476d0af7b1175b14d9cb6729b96795
+Author: Daniel Nylander <po@danielnylander.se>
+Date:	2009-06-13
+
+    Updated sv translation (Daniel Nylander)
+
+M	po/sv.po
+
+commit 5abcdbd43ef07460970ff2080dae121d908a0432
+Author: A. Walton <awalton@gnome.org>
+Date:	2009-06-12
+
+    Bug 547749 – "Open with" Applications not sorted.
+
+    Use a sort model and add a sortable column to sort the application
+    by name.
+
+M	libnautilus-private/nautilus-open-with-dialog.c
+
+commit 932fa70aade6c12b1ef7a0158c0247e79546452c
+Author: Jorge Gonzalez <jorgegonz@svn.gnome.org>
+Date:	2009-06-11
+
+    Updated Spanish translation
+
+M	po/es.po
+
+commit 7ef11edc4d1819fe40b9c238e4d4ed31c07a9f0e
+Author: Manoj Kumar Giri <mgiri@mgiri.csb>
+Date:	2009-06-10
+
+    Added entries for Hindi Translation updated by Rajesh Ranjan
+
+M	po/ChangeLog
+
+commit c0a359c656280dc504ea138b9e52763852ea202a
+Author: Manoj Kumar Giri <mgiri@mgiri.csb>
+Date:	2009-06-10
+
+    Updated Hindi Translation on behalf of Rajesh Ranjan
+
+M	po/hi.po
+
+commit 4cf7e22dc55b37e5678ff69ac02d4acc5ac989fa
+Author: Kjartan Maraas <kmaraas@gnome.org>
+Date:	2009-06-10
+
+    Updated Norwegian bokmål translation.
+
+M	po/nb.po
+
+commit 2316b80240b7b3c4e9627f31779b31d31cb1418d
+Author: Ivar Smolin <okul@linux.ee>
+Date:	2009-06-09
+
+    Updating Estonian translation
+
+M	po/et.po
+
+commit 8db758307d49bf94c6e379b4439bb1fc61b7e28a
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-06-08
+
+    Use a better string for schemas (#585134)
+
+M	libnautilus-private/apps_nautilus_preferences.schemas.in
+
+commit 73443aae586eb99e6ca4406a03d91544def77968
+Author: Runa Bhattacharjee <runab@redhat.com>
+Date:	2009-06-08
+
+    Updated Bengali India Translation
+
+M	po/bn_IN.po
+
+commit 03e8e436fe57369ee1d28cfef77791dc258e8f22
+Author: Mattias Põldaru <mahfiaz gmail com>
+Date:	2009-06-08
+
+    Updating Estonian translation
+
+M	po/et.po
+
+commit 26d6ec74a5ebac6fb64e6ce0484ed96eefa7a78f
+Author: Petr Kovar <pknbe@volny.cz>
+Date:	2009-06-07
+
+    Fixed Czech translation by Lucas Lommer
+
+    Thanks goes to Kamil Paral.
+
+M	po/cs.po
+
+commit 437b01afc7ee7325ec8ba65bea05a13ef072063a
+Author: A. Walton <awalton@gnome.org>
+Date:	2009-06-05
+
+    Bug 583214 – Nautilus aborts when giving an empty dest.
+
+    Follow up commit which fixes the code formatting and
+    ensures the 'Open' button is insensitive when the entry
+    is empty.
+
+M	src/nautilus-location-dialog.c
+
+commit 7b7a40130eb556fc7f32fb21a73c6437b29b0c73
+Author: Christian Persch <chpe@gnome.org>
+Date:	2009-06-04
+
+    Correct "srdcir" typo to "srcdir"
+
+M	Makefile.am
+
+commit aa1afee5cc5b96161b6bb7c1639a180a39850653
+Author: Theppitak Karoonboonyanan <thep@linux.thai.net>
+Date:	2009-06-04
+
+    Updated Thai translation.
+
+M	po/th.po
+
+commit c0aa87793104abbea45fb1791a1a1cbb771f8b99
+Author: Ask H. Larsen <asklarsen@gmail.com>
+Date:	2009-05-30
+
+    Updated Danish translation
+
+M	po/da.po
+
+commit 5bff677a0dc3ab5d5c68a2ef107cdbb34f133b34
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-05-28
+
+    Remove useless statfs/statvfs checks
+
+    Those checks are now obsoletes. This also fixes bug #583264.
+
+M	configure.in
+M	src/file-manager/fm-properties-window.c
+
+commit 0133e979531cd41ca7f1d76ff5adf66ddfa7d67a
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-05-28
+
+    Clear text in the location entry
+
+    Add a clear text icon in the location entry, now that the icon
+    entry is
+    available in GTK+ 2.16 (#145732).
+
+M	src/nautilus-connect-server-dialog.c
+M	src/nautilus-location-entry.c
+
+commit 7b86b78e2ff6a0f1b45ac8f8a9c30cf3d0c6ae96
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-05-28
+
+    Emit APPEARANCE_CHANGED when setting the bg color
+
+    Emit the APPEARANCE_CHANGED signal when we're setting the color, as
+    we're ignoring the pending changes after the backgorund is realized,
+    and
+    thus we're not getting color updates (#578136).
+
+M	eel/eel-background.c
+
+commit 518a1ae6ba0a3e09236f944ee655334087d5ddee
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-05-28
+
+    Display information about the selected object
+
+    Display information about the selected object in the "Information"
+    sidebar, using thumbnails if possible.
+    Also, remove the "Open with" buttons there for directories.
+    Fix bug #122045, thanks to Amos Brocco.
+
+M	src/nautilus-information-panel.c
+M	src/nautilus-sidebar-title.c
+
+commit 4bb61206b7dd4a3510ab15e8df0288e670f816d6
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-05-27
+
+    Dist COPYING.EXTENSIONS
+
+M	Makefile.am
+
+commit 7d9b6812d006d9aeecfb33d072cb382184fb901b
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-05-27
+
+    Add COPYING.EXTENSIONS clarifying some extension license issues
+
+A	COPYING.EXTENSIONS
+
+commit 74782b711adccfb85273ac38484e4adac8e010b4
+Author: Jorge Gonzalez <jorgegonz@svn.gnome.org>
+Date:	2009-05-26
+
+    Updated Spanish translation
+
+M	po/es.po
+
+commit 152b56a058dfd0c57cdc267a63fb3099c0c74e0c
+Author: Yaron Shahrabani <sh.yaron@gmail.com>
+Date:	2009-05-25
+
+    Updated Hebrew translation
+
+M	po/he.po
+
+commit 5fc840a5f089c627b4e38e2cf99f907ad8abb1a6
+Author: drtvasudevan <agnihot3@gmail.com>
+Date:	2009-05-25
+
+    Updated Tamil translation
+
+M	po/ta.po
+
+commit 3d8011ca8c095be884b603ccea261b955fa6518b
+Author: JF Ding <jfding@gmail.com>
+Date:	2009-05-25
+
+    Support daemon mode (exit_with_last_window preference)
+
+    This can be used if you want to run nautilus just to handle volume
+    monitoring, etc.
+
+M	libnautilus-private/apps_nautilus_preferences.schemas.in
+M	libnautilus-private/nautilus-global-preferences.c
+M	libnautilus-private/nautilus-global-preferences.h
+M	src/nautilus-main.c
+
+commit b49db4e5c9a3d21d3bc20c075e76b98b9977eedf
+Author: drtvasudevan <agnihot3@gmail.com>
+Date:	2009-05-23
+
+    Updated Tamil translation
+
+M	po/ta.po
+
+commit 7ea93ff768efdbc106407719b96a46fc34227273
+Author: Ivar Smolin <okul@linux.ee>
+Date:	2009-05-19
+
+    Updating Estonian translation
+
+M	po/et.po
+
+commit 2a005bc2c308e3960e723ed5cc8748f168acda17
+Author: A. Walton <awalton@gnome.org>
+Date:	2009-05-19
+
+    Bug 583214 – Nautilus aborts when giving an empty dest.
+
+    Fixes crash caused by passing a null path.
+
+M	src/nautilus-location-dialog.c
+
+commit 2eb9e588f954f8700d143fdb9d6d1e33318d9a33
+Author: Alexander Shopov <ash@contact.bg>
+Date:	2009-05-19
+
+    Updated Bulgarian translation
+
+M	po/bg.po
+
+commit d850d4742f41957506500c290c2756193c2a776f
+Author: Jorge Gonzalez <jorgegonz@svn.gnome.org>
+Date:	2009-05-17
+
+    Updated Spanish translation
+
+M	po/es.po
+
+commit 9af920dc7ab772c134ecd754be89b5d2b1aab5e0
+Author: Petr Kovar <pknbe@volny.cz>
+Date:	2009-05-17
+
+    Fixed Czech translation by Lucas Lommer
+
+    Phase two.
+
+M	po/cs.po
+
+commit 173731a6dae993b5f15e334f1ebfa4756302efb8
+Author: Petr Kovar <pknbe@volny.cz>
+Date:	2009-05-17
+
+    Updated Czech translation by Lucas Lommer
+
+M	po/cs.po
+
+commit de14cf64ec9179a32617b1b26ce28d47aea2d8d9
+Author: Matej Urban <matej.urban@gmail.com>
+Date:	2009-05-15
+
+    Updated Slovenian translation
+
+M	po/sl.po
+
+commit 1aba1feef00ad87da6e6e775568d3d8fea371576
+Author: Matej Urban <matej.urban@gmail.com>
+Date:	2009-05-15
+
+    Updated Slovenian translation
+
+M	po/sl.po
+
+commit 776823f11bc40d78d17db36a303d69de0363d090
+Author: Matej Urban <matej.urban@gmail.com>
+Date:	2009-05-15
+
+    Updated Slovenian translation
+
+M	po/sl.po
+
+commit 5fde2c7156b5bb8c0411bdbe649dd08172853d3a
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-05-13
+
+    Don't crash if parent button_press_event is NULL (#582457)
+
+    This fixes a crash when you press on the empty area of the toolbars.
+
+M	src/nautilus-navigation-window.c
+
+commit 24d9d3715194ff1145550a7fe3e9b8414ca568d2
+Author: Holger Berndt <berndth@gmx.de>
+Date:	2009-04-29
+
+    Allow users to define shortcuts for extension menu items
+
+M	src/nautilus-window-menus.c
+
+commit a2ab15477e2e2d13642567316788e12b5ace8504
+Author: Tomas Bzatek <tbzatek@redhat.com>
+Date:	2009-05-11
+
+    Properly include m4 macros
+
+    fixes error messages like:
+    ./configure: line 19939: syntax error near unexpected token `m4,'
+    ./configure: line 19939: `SHAVE_INIT(m4, enable)'
+
+M	Makefile.am
+
+commit e595852237c70e56c9d56688e2729eb59f6268fb
+Author: A. Walton <awalton@gnome.org>
+Date:	2009-05-11
+
+    Bug 549437 – ctrl + dnd file duplication in list view
+
+    Fixes bug #549437. Patch provided by "logari81".
+
+M	libnautilus-private/nautilus-tree-view-drag-dest.c
+
+commit 9d618732420d6d2ae9f666bbb78ee486746c7940
+Author: A. Walton <awalton@gnome.org>
+Date:	2009-05-10
+
+    Update About dialog for 2009.
+
+M	src/nautilus-window-menus.c
+
+commit bf1fe66266c96139138908c1f1e1b1cc48f2bd4a
+Author: Marios Zindilis <m.zindilis@dmajor.org>
+Date:	2009-05-10
+
+    Updated Greek translation
+
+M	po/el.po
+
+commit aeda70b4fa90990a538d37122d88f0a82d0578f5
+Author: Simos Xenitellis <simos@gnome.org>
+Date:	2009-05-09
+
+    Updated Greek translation
+
+M	po/el.po
+
+commit f7d425f9045dae6d1d79328e66019c3ce18b1f19
+Author: Simos Xenitellis <simos@gnome.org>
+Date:	2009-05-09
+
+    Updated Greek translation
+
+M	po/el.po
+
+commit 35be2bdcd58e20422d2c8f0cf61b6d2a027dfd93
+Author: Marios Zindilis <m.zindilis@dmajor.org>
+Date:	2009-05-09
+
+    Updated Greek translation
+
+M	po/el.po
+
+commit a9d7dfc3efb948a88cb5acfce3db8891e3297499
+Author: Christian Kirbach <Christian.Kirbach@googlemail.com>
+Date:	2009-05-06
+
+    Updated German translation.
+
+M	po/de.po
+
+commit 8d3525a3c3d414fe67f8f8b3c183c95e1282bce1
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-05-05
+
+    Post release version bump to 2.27.2
+
+M	configure.in
+
+commit 956bf2c75079003c91774a675091f7133cc8be35
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-05-05
+
+    Prepare for 2.27.1 release
+
+M	NEWS
+M	configure.in
+
+commit ec4ce1431bda72fc66ace675d860e7c2bb3bc3e6
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-05-05
+
+    Fix distcheck
+
+M	Makefile.am
+M	data/Makefile.am
+M	src/nautilus-main.c
+
+commit 057dabdd59a24d863d8b10dca336a3ca2bf8609f
+Author: Shankar Prasad <svenkate@redhat.com>
+Date:	2009-05-04
+
+    Updated the Kannda translations
+
+M	po/kn.po
+
+commit 0a6012a48bd71c20d7cd32c05e1976f1127ce230
+Author: Jorge Gonzalez <jorgegonz@svn.gnome.org>
+Date:	2009-05-03
+
+    Updated Spanish translation
+
+M	po/es.po
+
+commit a6f87ffe8133a4f9205dd1ab1d441fa06c40b497
+Author: Ivar Smolin <okul@linux.ee>
+Date:	2009-05-02
+
+    Updating Estonian translation
+
+M	po/et.po
+
+commit 86cacc2fd60dbed4397567edd08021513c1a60ae
+Author: Jorge Gonzalez <jorgegonz@svn.gnome.org>
+Date:	2009-05-01
+
+    Updated Spanish translation
+
+M	po/es.po
+
+commit bcbbc3f7853ab1a3a0f2b226312a41d5987e1d5a
+Author: Vladimir Melo <vmelo@gnome.org>
+Date:	2009-05-01
+
+    Updated Brazilian Portuguese translation.
+
+M	po/pt_BR.po
+
+commit d6fa64ab439ac900a92a0467f39cdf72afa5870f
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-05-01
+
+    Add building tips link
+
+    Mention http://live.gnome.org/Nautilus/Development/Nautilus in the
+    README file.
+
+M	README
+
+commit 1a8adc87b49603cf14ce139e66bde0fe7bddec8e
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-05-01
+
+    Remove a reference to SVN
+
+    Also, update the GIT info page link.
+
+M	HACKING
+
+commit 7e17224a1e68bb755bd281d46e0533b1dcff52d8
+Author: Claude Paroz <claude@2xlibre.net>
+Date:	2009-04-30
+
+    Updated French translation
+
+M	po/fr.po
+
+commit c51ac9926e012267d305711b949a937d917f075b
+Author: Gabor Kelemen <kelemeng@gnome.hu>
+Date:	2009-04-30
+
+    Mark strings as translatable, fix bug #579769
+
+M	src/nautilus-file-management-properties.ui
+
+commit 23ff2a21d2925945dde6e04a47190ebfa27ae8c7
+Author: Gabor Kelemen <kelemeng@gnome.hu>
+Date:	2009-04-30
+
+    Update POTFILES.*, close bug #580784
+
+M	po/POTFILES.in
+M	po/POTFILES.skip
+
+commit a1a501224999d7abda06e9a2f7eb6da64c17d089
+Author: Shankar Prasad <svenkate@redhat.com>
+Date:	2009-04-30
+
+    Updated Kannada translation
+
+M	po/kn.po
+
+commit 90e5e1720d09188f3eabb67e502272a549c63dec
+Author: Maxim V. Dziumanenko <dziumanenko@gmail.com>
+Date:	2009-04-28
+
+    Updated Ukrainian translation
+
+M	po/uk.po
+
+commit 48ed43f32668e5615ac64a3de55ec7ab2f254ef7
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-04-27
+
+    Reverse the order for folder icons overrides
+
+    Use the correct order for folder icons overrides, so that we can
+    keep track of things like "folder-visiting" or "folder-drag-accept".
+    Patch by Krzysztof Kosiński (#567254).
+
+M	libnautilus-private/nautilus-file.c
+
+commit 43c9802d618bcb0d035b4fb0dea4807367d893ea
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-04-27
+
+    Don't display accelerators in Tabs menu
+
+    Set use_underline == FALSE for items in the "Tabs" menu, so that
+    folders with underscores in their names will be displayed properly
+    in the menu items (#580392).
+
+M	src/nautilus-navigation-window-menus.c
+
+commit 9c0dddfbaddfe251814ff473d9f0a734c385d931
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-04-27
+
+    Display the application icon in the popup menu
+
+    If available, display the application icon next to the "Open with"
+    item in the file manager window menus (#546916).
+
+M	src/file-manager/fm-directory-view.c
+
+commit fe4ca76584061215547edb55b8a0bab4cdb8e034
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-04-27
+
+    Fix DOAP file
+
+    Add "mailto:" prefixes to email addresses in the DOAP file.
+
+M	nautilus.doap
+
+commit 7f404a39f63ceb8d906809c2092cecca7b785574
+Author: Ivar Smolin <okul@linux.ee>
+Date:	2009-04-25
+
+    Updating Estonian translation
+
+M	po/et.po
+
+commit cffb9cf70254086a3737b37e8fad786a6e6de414
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-04-23
+
+    Don't show autorun hints for Win32 software media
+
+    Now that shared-mime-info supports "x-content/win32-software" vs
+    "x-content/unix-software", use this distinction to inhibit autorun
+    prompts/hints for media containing Win32 software (#524270).
+
+M	libnautilus-private/nautilus-autorun.c
+M	src/nautilus-window-manage-views.c
+
+commit 7f74d06e270d89b6de1a3f23fe3388830f2c25ab
+Author: Olav Vitters <olav@bkor.dhs.org>
+Date:	2009-04-23
+
+    doap: Add desktop category
+
+M	nautilus.doap
+
+commit 9f1c7d03c45298701320f5503e8ba1afec9fb523
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-04-23
+
+    Add shave to the autotools setup
+
+    Use shave to have some more meaningful build messages.
+    It can be turned off by using 'make V=1'.
+
+M	Makefile.am
+M	configure.in
+A	m4/Makefile.am
+A	m4/shave-libtool.in
+A	m4/shave.in
+A	m4/shave.m4
+
+commit 06dda37076c6e5b222f868a46fe84c070a04d680
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-04-23
+
+    Move desktop files into data/
+
+    Move desktop files into data/ subdirectory, so that they not clutter
+    the top source dir.
+
+M	Makefile.am
+M	configure.in
+M	data/Makefile.am
+R100	nautilus-autorun-software.desktop.in.in
+data/nautilus-autorun-software.desktop.in.in
+R100	nautilus-browser.desktop.in.in
+data/nautilus-browser.desktop.in.in
+R100	nautilus-computer.desktop.in.in
+data/nautilus-computer.desktop.in.in
+R100	nautilus-file-management-properties.desktop.in.in
+data/nautilus-file-management-properties.desktop.in.in
+R100	nautilus-folder-handler.desktop.in.in
+data/nautilus-folder-handler.desktop.in.in
+R100	nautilus-home.desktop.in.in	data/nautilus-home.desktop.in.in
+R100	nautilus.desktop.in.in	data/nautilus.desktop.in.in
+
+commit dd10aa3618b195a127014ba033eb522f907077a1
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-04-23
+
+    Fix typo in ChangeLog generation script
+
+    Set the right name for the start tag in the ChangeLog
+    generation script.
+
+M	Makefile.am
+
+commit c0b27cce8d33ea8220434cf59b1e504fc9d2bcea
+Author: Matej Urban <matej.urban@gmail.com>
+Date:	2009-04-22
+
+    Updated Slovenian translation
+
+M	po/sl.po
+
+commit 9826f177cb72fc9f595356b773f51059bef6cd1e
+Author: Andrew Walton <awalton@gnome.org>
+Date:	2009-04-22
+
+    Let forward/back mouse buttons work
+
+    Install a handler to link forward/back mouse buttons to
+    forward/back actions in NautilusNavigationWindow, with a preference
+    to set the right X button number in GConf.
+
+    Signed-off-by: Cosimo Cecchi <cosimoc@gnome.org>
+
+M	libnautilus-private/apps_nautilus_preferences.schemas.in
+M	libnautilus-private/nautilus-global-preferences.c
+M	libnautilus-private/nautilus-global-preferences.h
+M	src/nautilus-navigation-window.c
+
+commit b02ef0a7ec2d0de3064d322f5da103a8dfd492d3
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-04-22
+
+    Remove useless function
+
+    Remove nautilus_has_valid_failed_thumbnail(), as that's not used
+    anymore after the last commit.
+
+M	libnautilus-private/nautilus-thumbnails.c
+M	libnautilus-private/nautilus-thumbnails.h
+
+commit 20f4389f7cd22bd001ebf17c0c3c459cca5483ad
+Author: Matthias Clasen <mclasen@redhat.com>
+Date:	2009-04-22
+
+    Avoid duplicate function call
+
+    Don't call nautilus_has_valid_failed_thumbnail, as
+    nautilus_can_thumbnail will eventually call the same gnome_desktop
+    function (#574205).
+
+    Signed-off-by: Cosimo Cecchi <cosimoc@gnome.org>
+
+M	libnautilus-private/nautilus-file.c
+
+commit 3ffebcdbf5b5ba7e6b018f542fdc39522a42d1b2
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-04-22
+
+    Remove some more GTK+ deprecated macros
+
+    Remove some other bits (hopefully the last) of deprecated GTK+ macros.
+
+M	src/nautilus-history-sidebar.c
+
+commit c308f7f3e96094c4d5077655960a0910dbaa605c
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-04-22
+
+    Remove other deprecated GTK+ symbols
+
+    There were still some references to deprecated GTK+ symbols in some
+    files, or in some comments. Let's drop them all.
+
+M	eel/eel-editable-label.c
+M	eel/eel-gdk-pixbuf-extensions.c
+M	libnautilus-private/nautilus-cell-renderer-text-ellipsized.h
+M	libnautilus-private/nautilus-directory.h
+M	libnautilus-private/nautilus-file.h
+M	libnautilus-private/nautilus-saved-search-file.h
+M	libnautilus-private/nautilus-undo-signal-handlers.c
+M	src/file-manager/fm-empty-view.c
+M	src/file-manager/fm-empty-view.h
+M	test/test-eel-background.c
+
+commit 4485d32d41f1519313ad49d43914bbd0b78d104b
+Author: Jorge Gonzalez <jorgegonz@svn.gnome.org>
+Date:	2009-04-21
+
+    Updated Spanish translation
+
+M	po/es.po
+
+commit 7da1601ba6288e48dc6ed3023de03fff04d20b2d
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-04-21
+
+    Check for NULL when sorting columns
+
+    Check for a NULL value of the order array when sorting the columns.
+    This might help when dealing with strange GConf setup issues
+    (#524341).
+
+M	libnautilus-private/nautilus-column-utilities.c
+
+commit 3b5af96a5f41640d447f7215a758d4de4c0220fb
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-04-21
+
+    Update EggSMClient from libegg
+
+    Re-apply the reverted string freeze break commit now that we branched.
+    Don't check if the desktop file exists ourselves, as the Egg code will
+    take care of that itself.
+    Thanks to Christian Persch (#576619).
+
+M	cut-n-paste-code/libegg/eggsmclient.c
+M	src/nautilus-main.c
+
+commit 60e58366e06f42b03072e06a19f8adeece0ded6a
+Author: Nelson Benitez <nbenitezl@gmail.com>
+Date:	2009-04-21
+
+    Use g_timeout_add_seconds where appropriate
+
+    Use g_timeout_add_seconds instead of g_timeout_add where appropriate.
+    Fix bug #574033.
+
+    Signed-off-by: Cosimo Cecchi <cosimoc@gnome.org>
+
+M	libnautilus-private/nautilus-icon-container.c
+M	libnautilus-private/nautilus-thumbnails.c
+M	libnautilus-private/nautilus-tree-view-drag-dest.c
+M	libnautilus-private/nautilus-users-groups-cache.c
+M	src/file-manager/fm-desktop-icon-view.c
+M	src/file-manager/fm-icon-view.c
+M	src/file-manager/fm-list-view.c
+M	src/nautilus-notes-viewer.c
+M	src/nautilus-spatial-window.c
+
+commit 99e66a93605e056c80cebb4c3ac9b6b58167ad1c
+Author: Matthias Clasen <mclasen@redhat.com>
+Date:	2009-04-21
+
+    Avoid delays in background switching
+
+    Don't delay background switching, so that users will immediately see
+    it changing when browsing the background list (#330168).
+
+    Signed-off-by: Cosimo Cecchi <cosimoc@gnome.org>
+
+M	libnautilus-private/nautilus-directory-background.c
+
+commit 979d877c1803034be8a3ff69437974a1cfdbff30
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-04-21
+
+    Enforce {GDK,GTK}_DISABLE_DEPRECATED cflags
+
+    Now that we build cleanly without deprecated symbols, widen the
+    deprecated check policy to GDK/GTK+.
+
+M	configure.in
+
+commit b695c970182bbf19f2c38bf7405db506e7c23bb0
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-04-21
+
+    Remove deprecated GDK/GTK+ symbols
+
+    Remove all uses of deprecated GDK and GTK+ symbols, replacing them
+    with the currently supported equivalents.
+    Based on a patch from Tal Benavidor (#565038).
+
+M	eel/eel-background-box.h
+M	eel/eel-background.c
+M	eel/eel-background.h
+M	eel/eel-canvas-rect-ellipse.h
+M	eel/eel-canvas.c
+M	eel/eel-canvas.h
+M	eel/eel-debug-drawing.c
+M	eel/eel-editable-label.c
+M	eel/eel-editable-label.h
+M	eel/eel-gtk-extensions.c
+M	eel/eel-gtk-extensions.h
+M	eel/eel-gtk-macros.h
+M	eel/eel-image-table.c
+M	eel/eel-image-table.h
+M	eel/eel-labeled-image.h
+M	eel/eel-stock-dialogs.c
+M	eel/eel-types.c
+M	eel/eel-wrap-table.c
+M	eel/eel-wrap-table.h
+M	libnautilus-private/nautilus-autorun.c
+M	libnautilus-private/nautilus-bookmark.h
+M	libnautilus-private/nautilus-cell-renderer-pixbuf-emblem.h
+M	libnautilus-private/nautilus-clipboard-monitor.h
+M	libnautilus-private/nautilus-column-chooser.h
+M	libnautilus-private/nautilus-desktop-directory-file.h
+M	libnautilus-private/nautilus-desktop-directory.h
+M	libnautilus-private/nautilus-desktop-icon-file.h
+M	libnautilus-private/nautilus-desktop-link-monitor.h
+M	libnautilus-private/nautilus-desktop-link.h
+M	libnautilus-private/nautilus-directory.h
+M	libnautilus-private/nautilus-dnd.c
+M	libnautilus-private/nautilus-entry.h
+M	libnautilus-private/nautilus-file.h
+M	libnautilus-private/nautilus-horizontal-splitter.h
+M	libnautilus-private/nautilus-icon-canvas-item.h
+M	libnautilus-private/nautilus-icon-container.h
+M	libnautilus-private/nautilus-keep-last-vertical-box.h
+M	libnautilus-private/nautilus-merged-directory.h
+M	libnautilus-private/nautilus-metafile.h
+M	libnautilus-private/nautilus-open-with-dialog.c
+M	libnautilus-private/nautilus-progress-info.c
+M	libnautilus-private/nautilus-search-directory-file.h
+M	libnautilus-private/nautilus-search-directory.h
+M	libnautilus-private/nautilus-trash-monitor.h
+M	libnautilus-private/nautilus-undo-manager.h
+M	libnautilus-private/nautilus-undo-transaction.h
+M	libnautilus-private/nautilus-vfs-directory.h
+M	libnautilus-private/nautilus-vfs-file.h
+M	src/file-manager/fm-desktop-icon-view.c
+M	src/file-manager/fm-desktop-icon-view.h
+M	src/file-manager/fm-directory-view.c
+M	src/file-manager/fm-directory-view.h
+M	src/file-manager/fm-icon-container.h
+M	src/file-manager/fm-icon-view.c
+M	src/file-manager/fm-icon-view.h
+M	src/file-manager/fm-list-model.h
+M	src/file-manager/fm-list-view.c
+M	src/file-manager/fm-list-view.h
+M	src/file-manager/fm-properties-window.c
+M	src/file-manager/fm-properties-window.h
+M	src/file-manager/fm-tree-model.h
+M	src/file-manager/fm-tree-view.c
+M	src/file-manager/fm-tree-view.h
+M	src/nautilus-application.h
+M	src/nautilus-bookmark-list.h
+M	src/nautilus-desktop-window.h
+M	src/nautilus-emblem-sidebar.c
+M	src/nautilus-emblem-sidebar.h
+M	src/nautilus-history-sidebar.c
+M	src/nautilus-history-sidebar.h
+M	src/nautilus-image-properties-page.h
+M	src/nautilus-information-panel.c
+M	src/nautilus-information-panel.h
+M	src/nautilus-location-bar.h
+M	src/nautilus-location-entry.h
+M	src/nautilus-navigation-bar.h
+M	src/nautilus-navigation-window.h
+M	src/nautilus-notes-viewer.c
+M	src/nautilus-notes-viewer.h
+M	src/nautilus-places-sidebar.c
+M	src/nautilus-places-sidebar.h
+M	src/nautilus-property-browser.h
+M	src/nautilus-query-editor.h
+M	src/nautilus-search-bar.c
+M	src/nautilus-search-bar.h
+M	src/nautilus-side-pane.h
+M	src/nautilus-sidebar-title.h
+M	src/nautilus-spatial-window.c
+M	src/nautilus-spatial-window.h
+M	src/nautilus-throbber.h
+M	src/nautilus-window-menus.c
+M	src/nautilus-window.h
+M	src/nautilus-zoom-control.h
+M	test/test-nautilus-directory-async.c
+M	test/test.c
+
+commit e2f711533e1008b62c9db70fb3bcf877191866d4
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-04-20
+
+    Fix broken pofile
+
+    Lots of duplicated strings that makes msgfmt -c check fail.
+
+M	po/ha.po
+
+commit 42bea16f00e93441a601f3279702d1bd60f07592
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-04-20
+
+    Comment out invalid pofile strings
+
+    msgfmt -c bs.po said:
+    bs.po:3783: number of format specifications in 'msgid' and 'msgstr[0]'
+    does not match msgfmt: found 1 fatal error
+    which meant branching was impossible
+
+M	po/bs.po
+
+commit f9585e4f4825ab1114cd4185ec8cdca9360da3c9
+Author: Jonathon Jongsma <jonathon@quotidian.org>
+Date:	2009-04-20
+
+    Allow shift+return during typeahead find
+
+    Allow shift+rename to close parent + open when typeahead find window
+    is active. (#579551)
+
+M	libnautilus-private/nautilus-icon-container.c
+
+commit 1f9ed9598a3324278eaef2153b95f22962dd2558
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:	2009-04-17
+
+    Updated Arabic translation
+
+M	po/ar.po
+
+commit 9c4c0254d4788ac1d7e10df30fc74cc2d64c5d09
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-04-17
+
+    Preload /desktop/gnome/background from gconf
+
+    We'll be reading a lot of background settings, so we want to preload
+    (and thus also add_dir) the gconf directory. (Fixes #578993)
+
+M	libnautilus-private/nautilus-global-preferences.c
+
+commit e61a17f3445be7c77f092b717f1e64a1231e01c0
+Author: Cosimo Cecchi <cosimoc@gnome.org>
+Date:	2009-04-17
+
+    Fix a copy/paste typo.
+
+M	README.commits
+
+commit bad7749c6cc88009ba5e0f9f96f9ab418a1f7193
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-04-17
+
+    Add .gitignore files
+
+A	.gitignore
+A	data/.gitignore
+A	docs/reference/.gitignore
+A	docs/reference/libnautilus-extension/.gitignore
+A
+docs/reference/libnautilus-extension/libnautilus-extension-overrides.txt
+A
+docs/reference/libnautilus-extension/libnautilus-extension-sections.txt
+A	eel/.gitignore
+A	libnautilus-private/.gitignore
+A	po/.gitignore
+A	src/.gitignore
+
+commit 8acf8338c97387af3b93793760a3b1d64e752a2c
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-04-17
+
+    Add makefile rules to generate ChangeLog
+
+M	Makefile.am
+
+commit 3f4a5c97a23acbca33836d14edb2b5c8798a6dc5
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-04-17
+
+    Add doap file with name, description and developer info
+
+A	nautilus.doap
+
+commit a867c35e835128647396ad5b2df498c189944ca4
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-04-17
+
+    Add README.commits, update HACKING for git
+
+M	HACKING
+M	Makefile.am
+A	README.commits
+
+commit 4a78eabc71df08bdf3d71877c3b3cb62d1b80bff
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-04-17
+
+    Move ChangeLog to ChangeLog-20090417
+
+    With the switch to git we're moving to an autogenerated ChangeLog.
+
+R099	ChangeLog	ChangeLog-20090417
+M	Makefile.am
+
+commit 6a8673c7806ad7a014feb9bc780e0dfcadb5d71c
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-04-16
+
+    Reversed check in last commit, fixed.
+
+    2009-04-16	Alexander Larsson  <alexl@redhat.com>
+
+	* configure.in:
+	Reversed check in last commit, fixed.
+
+
+
+    svn path=/trunk/; revision=15188
+
+M	ChangeLog
+M	configure.in
+
+commit ab550c223368c4d0bb9b7133e477430a38fe96d6
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-04-16
+
+    Bug 578983 – set_more_warnings check of WARNING_CFLAGS doesn't work
+
+    2009-04-16	Alexander Larsson  <alexl@redhat.com>
+
+	Bug 578983 – set_more_warnings check of WARNING_CFLAGS
+	doesn't work
+
+	* configure.in:
+	Actually check the options.
+
+
+    svn path=/trunk/; revision=15187
+
+M	ChangeLog
+M	configure.in
+
+commit 9870d42d6709fea0fd3c50d00f5a491902be27e5
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-04-16
+
+    Set typeahead column to the name column.
+
+    2009-04-16	Alexander Larsson  <alexl@redhat.com>
+
+	* src/nautilus-places-sidebar.c (nautilus_places_sidebar_init):
+	Set typeahead column to the name column.
+
+
+    svn path=/trunk/; revision=15186
+
+M	ChangeLog
+M	src/nautilus-places-sidebar.c
+
+commit 3125825a1cb10f38779b926050d4030f45a6003a
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-04-16
+
+    Bug 578468 – Change of font DPI setting does not effect desktop
+    icons
+
+    2009-04-16	Alexander Larsson  <alexl@redhat.com>
+
+	Bug 578468 – Change of font DPI setting does not effect
+	desktop icons
+
+	* libnautilus-private/nautilus-icon-canvas-item.c:
+	(nautilus_icon_canvas_item_invalidate_label_size):
+	Invalidate pango layouts since the context could have changed
+	For instance the font DPI.
+
+
+
+    svn path=/trunk/; revision=15185
+
+M	ChangeLog
+M	libnautilus-private/nautilus-icon-canvas-item.c
+
+commit 4323f9b47229312a60093587724e1aa102a8c926
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-04-16
+
+    Bug 579086 – Excessive white-space on right-hand side in icon view
+
+    2009-04-16	Alexander Larsson  <alexl@redhat.com>
+
+	Bug 579086 – Excessive white-space on right-hand side in
+	icon view
+
+	* libnautilus-private/nautilus-icon-container.c:
+	(nautilus_icon_container_update_scroll_region):
+	When using at allocation->width, take zoom into account
+
+
+    svn path=/trunk/; revision=15184
+
+M	ChangeLog
+M	libnautilus-private/nautilus-icon-container.c
+
+commit 649c39c7d8f6b3162e6f9142f3201eb254f26c8f
+Author: Alexander Larsson <alexl@redhat.com>
+Date:	2009-04-13
+
+    Post release version bump
+
+    2009-04-13	Alexander Larsson  <alexl@redhat.com>
+
+	* configure.in:
+	Post release version bump
+
+    === nautilus 2.26.2 ===
+
+
+    svn path=/trunk/; revision=15183
+
+M	ChangeLog
+M	configure.in
+M	eel/ChangeLog
+M	po/ChangeLog
