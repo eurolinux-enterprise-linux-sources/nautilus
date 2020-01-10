@@ -15,7 +15,7 @@
 Name:           nautilus
 Summary:        File manager for GNOME
 Version:        2.28.4
-Release:        25%{?dist}
+Release:        26%{?dist}
 License:        GPLv2+
 Group:          User Interface/Desktops
 Source:         http://download.gnome.org/sources/%{name}/2.28/%{name}-%{version}.tar.bz2
@@ -179,6 +179,9 @@ Patch48:	nautilus-disable-deprecated.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1217342
 Patch49:	fix-background-corruption.patch
 
+# https://bugzilla.redhat.com/show_bug.cgi?id=1333638
+Patch50:	RHEL6.9-translations.patch
+
 %description
 Nautilus is the file manager and graphical shell for the GNOME desktop
 that makes it easy to manage your files and the rest of your system.
@@ -245,6 +248,7 @@ for developing nautilus extensions.
 %patch47 -p1 -b .disable-deprecated
 %patch48 -p1 -b .stack-size
 %patch49 -p1 -b .fix-background-corruption
+%patch50 -p2 -b .RHEL6.9-translations
 
 
 %build
@@ -375,6 +379,10 @@ fi
 
 
 %changelog
+* Mon Oct 31 2016 Carlos Soriano <csoriano@redhat.com> - 2.28.4-26
+- Apply translations for the 6.9 version
+  Resolves: #1333638
+
 * Wed Feb 24 2016 Ray Strode <rstrode@redhat.com> - 2.28.4-25
 - Fix background corruption on screen rotate
   Resolves: #1217342
