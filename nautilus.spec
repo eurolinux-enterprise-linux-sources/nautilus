@@ -15,7 +15,7 @@
 Name:           nautilus
 Summary:        File manager for GNOME
 Version:        2.28.4
-Release:        19%{?dist}
+Release:        25%{?dist}
 License:        GPLv2+
 Group:          User Interface/Desktops
 Source:         http://download.gnome.org/sources/%{name}/2.28/%{name}-%{version}.tar.bz2
@@ -145,10 +145,6 @@ Patch38:	nautilus-2.32.2.1-peek_display_name-crash.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=666086
 Patch39:	nautilus-2.28.4-recursive-sync-gio-calls.patch
 
-# Nautilus doesn't refresh buttons of folders in status bar
-# https://bugzilla.redhat.com/show_bug.cgi?id=690147
-Patch40:	nautilus-2.31.5-cleanup-pathbar.patch
-
 # RHEL6.2 Beta nautilus segfaults and respawns (ad infinitum)
 # https://bugzilla.redhat.com/show_bug.cgi?id=755561
 Patch41:	nautilus-2.28.4-xdg-dirs-refresh-crashfix.patch
@@ -164,6 +160,24 @@ Patch43:	nautilus-2.28.4-free-space.patch
 # cannot rename .desktop, .kdelnk, .theme files
 # https://bugzilla.redhat.com//show_bug.cgi?id=782467
 Patch44:	nautilus-2.28.4-desktop-file-rename.patch
+
+# crashes on folder removal in browser mode
+# https://bugzilla.redhat.com/show_bug.cgi?id=1026561
+Patch45:	nautilus-cleanup-pathbar2.patch
+
+# crashes accessing files over sftp
+# https://bugzilla.redhat.com/show_bug.cgi?id=1072272
+Patch46:	nautilus-hash-table-crash.patch
+
+# disable deprecations check, so it builds succesfully
+Patch47:	nautilus-stack-size.patch
+
+# crashes on thumbnailing
+# https://bugzilla.redhat.com/show_bug.cgi?id=1268970
+Patch48:	nautilus-disable-deprecated.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1217342
+Patch49:	fix-background-corruption.patch
 
 %description
 Nautilus is the file manager and graphical shell for the GNOME desktop
@@ -222,11 +236,15 @@ for developing nautilus extensions.
 %patch37 -p1 -b .gconf-default
 %patch38 -p1 -b .peek-display-name
 %patch39 -p1 -b .dbus-deadlock
-%patch40 -p1 -b .cleanup-pathbar
 %patch41 -p1 -b .xdg-dirs-refresh-crashfix
 %patch42 -p1 -b .screen-size-refresh
 %patch43 -p1 -b .free-space
 %patch44 -p1 -b .desktop-file-rename
+%patch45 -p1 -b .cleanup-pathbar2
+%patch46 -p1 -b .hash-table-crash
+%patch47 -p1 -b .disable-deprecated
+%patch48 -p1 -b .stack-size
+%patch49 -p1 -b .fix-background-corruption
 
 
 %build
@@ -357,6 +375,31 @@ fi
 
 
 %changelog
+* Wed Feb 24 2016 Ray Strode <rstrode@redhat.com> - 2.28.4-25
+- Fix background corruption on screen rotate
+  Resolves: #1217342
+
+* Tue Jan 20 2016 Carlos Soriano <csoriano@redhat.com> - 2.28.4-24
+- Fix crash on thumbnailing due to small stack size
+Resolves: #1268970
+
+* Mon Jan 19 2016 Carlos Soriano <csoriano@redhat.com> - 2.28.4-23
+- Disable deprecations checks so it builds succesfully
+Resolves: #1072272 #1026561
+
+* Mon Jan 19 2016 Carlos Soriano <csoriano@redhat.com> - 2.28.4-22
+- Fix date in 2.28.4-20 commit, so it can build
+Resolves: #1072272 #1026561
+
+* Mon Jan 19 2016 Carlos Soriano <csoriano@redhat.com> - 2.28.4-21
+- Fix previous build, a patch had to be removed.
+Resolves: #1072272 #1026561
+
+* Mon Jan 18 2016 Carlos Soriano <csoriano@redhat.com> - 2.28.4-20
+- Fix crashes accessing files over sftp (#1072272)
+- Fix crashes on folder removal in browser mode (#1026561)
+Resolves: #1072272 #1026561
+
 * Fri Mar  2 2012 Tomas Bzatek <tbzatek@redhat.com> - 2.28.4-19
 - Fix segfault on startup when showing homedir as desktop (#755561)
 - Rearrange icons on desktop when screen size changes (#600260)
