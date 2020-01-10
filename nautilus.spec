@@ -8,7 +8,7 @@
 
 Name:           nautilus
 Version:        3.26.3.1
-Release:        2%{?dist}
+Release:        6%{?dist}
 Summary:        File manager for GNOME
 
 License:        GPLv3+
@@ -16,11 +16,12 @@ URL:            https://wiki.gnome.org/Apps/Nautilus
 Source0:        https://download.gnome.org/sources/%{name}/3.26/%{name}-%{version}.tar.xz
 
 # Don't use gnome-autoar which we don't currently have in RHEL 7.4
-Patch0:         0001-general-remove-gnome-autoar.patch
+Patch0:         Remove-autoar.patch
 Patch1:         0001-meson-Request-c11-when-possible.patch
 Patch2:         0001-file-Make-sure-we-include-necessary-headers.patch
 Patch3:	        0001-Meson-Make-sure-__GNU_SOURCE-is-set.patch
 Patch4:	        0001-meson-Use-python2-for-postinstall.patch
+Patch5:         remove-nfs-support-strings.patch
 
 BuildRequires:  gtk-doc
 BuildRequires:  meson
@@ -50,6 +51,9 @@ Requires:       libexif%{_isa} >= %{libexif_version}
 # the main binary links against libnautilus-extension.so
 # don't depend on soname, rather on exact version
 Requires:       %{name}-extensions%{_isa} = %{version}-%{release}
+# We want Brasero to always be available. Seems adding it to comps is too
+# complicated so was adviced to do it here
+Requires:  brasero-nautilus
 
 # Explicitly conflict with older gedit for "enable-delete" setting removal
 Conflicts:      gedit < 2:3.16.0
@@ -152,6 +156,22 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas >&/dev/null || :
 %doc %{_datadir}/gtk-doc/html/libnautilus-extension/
 
 %changelog
+* Tue Apr 23 2019 Carlos Soriano <csoriano@redhat.com> - 3.26.1-6
+- Remove NFS support strings, since libnfs is not in RHEL
+  Resolves: RHBZ#1641856
+
+* Thu Jan 03 2019 Carlos Soriano <csoriano@redhat.com> - 3.26.1-5
+- Fix removal of autoar patch
+  Resolves: RHBZ#1594177
+
+* Fri Sep 07 2018 Carlos Soriano <csoriano@redhat.com> - 3.26.1-4
+- Use Requires, not BuildRequires for brasero-nautilus
+- Resolves: #1600163
+
+* Tue Sep 04 2018 Carlos Soriano <csoriano@redhat.com> - 3.26.1-3
+- Add brasero-nautilus as hard dependency
+- Resolves: #1600163
+
 * Wed Jun 06 2018 Carlos Soriano <csoriano@redhat.com> - 3.26.3.1-2
 - Rework autoar patch and remove the trusted patch, as it's included
 - Resolves: #1569738

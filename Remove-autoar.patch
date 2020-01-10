@@ -1,24 +1,26 @@
-From c5fbd2427753add9f05cc87d0f25789cce37b2e2 Mon Sep 17 00:00:00 2001
-From: Carlos Soriano <csoriano@gnome.org>
-Date: Wed, 6 Jun 2018 14:59:39 +0200
+From 0ab91c9fb15646f6b83c9ac37f05dc87b34c3793 Mon Sep 17 00:00:00 2001
+From: Carlos Soriano <csoriano@redhat.com>
+Date: Wed, 9 Jan 2019 15:38:56 +0100
 Subject: [PATCH] Remove autoar
 
+RHEL 7 doesn't have libarchive
 ---
- meson.build                                  |   2 -
- po/POTFILES.in                               |   4 +-
- src/meson.build                              |   5 +-
- src/nautilus-compress-dialog-controller.c    | 339 --------
- src/nautilus-compress-dialog-controller.h    |  36 -
- src/nautilus-file-operations.c               | 857 -------------------
- src/nautilus-file-operations.h               |  14 -
- src/nautilus-file-undo-operations.c          | 320 -------
- src/nautilus-file-undo-operations.h          |  58 --
- src/nautilus-file.c                          |  38 +-
- src/nautilus-files-view.c                    | 636 +-------------
- src/nautilus-mime-actions.c                  |  28 -
- src/resources/nautilus.gresource.xml         |   1 -
- src/resources/ui/nautilus-compress-dialog.ui | 186 ----
- 14 files changed, 37 insertions(+), 2487 deletions(-)
+ meson.build                                   |   2 -
+ po/POTFILES.in                                |   4 +-
+ src/meson.build                               |   5 +-
+ src/nautilus-compress-dialog-controller.c     | 339 -------
+ src/nautilus-compress-dialog-controller.h     |  36 -
+ src/nautilus-file-operations.c                | 857 ------------------
+ src/nautilus-file-operations.h                |  14 -
+ src/nautilus-file-undo-operations.c           | 320 -------
+ src/nautilus-file-undo-operations.h           |  58 --
+ src/nautilus-file.c                           |  38 +-
+ src/nautilus-files-view.c                     | 644 +------------
+ src/nautilus-mime-actions.c                   |  28 -
+ src/resources/nautilus.gresource.xml          |   1 -
+ src/resources/ui/nautilus-compress-dialog.ui  | 186 ----
+ .../ui/nautilus-files-view-context-menus.ui   |  15 -
+ 15 files changed, 37 insertions(+), 2510 deletions(-)
  delete mode 100644 src/nautilus-compress-dialog-controller.c
  delete mode 100644 src/nautilus-compress-dialog-controller.h
  delete mode 100644 src/resources/ui/nautilus-compress-dialog.ui
@@ -1822,7 +1824,7 @@ index 630443f10..8a153c32d 100644
 -
  #endif /* __NAUTILUS_FILE_UNDO_OPERATIONS_H__ */
 diff --git a/src/nautilus-file.c b/src/nautilus-file.c
-index 1657edcde..cff660f1f 100644
+index d6ac35a44..d396b1de1 100644
 --- a/src/nautilus-file.c
 +++ b/src/nautilus-file.c
 @@ -51,7 +51,6 @@
@@ -1833,7 +1835,7 @@ index 1657edcde..cff660f1f 100644
  #include <gdesktop-enums.h>
  #include <libnautilus-extension/nautilus-file-info.h>
  #include <libnautilus-extension/nautilus-extension-private.h>
-@@ -8262,11 +8261,38 @@ real_is_special_link (NautilusFile *file)
+@@ -8255,11 +8254,38 @@ real_is_special_link (NautilusFile *file)
  gboolean
  nautilus_file_is_archive (NautilusFile *file)
  {
@@ -1878,7 +1880,7 @@ index 1657edcde..cff660f1f 100644
  
  
 diff --git a/src/nautilus-files-view.c b/src/nautilus-files-view.c
-index 8784f63f8..90fcca9d6 100644
+index 8784f63f8..985ff1652 100644
 --- a/src/nautilus-files-view.c
 +++ b/src/nautilus-files-view.c
 @@ -48,7 +48,6 @@
@@ -2596,10 +2598,12 @@ index 8784f63f8..90fcca9d6 100644
      settings_show_delete_permanently = g_settings_get_boolean (nautilus_preferences,
                                                                 NAUTILUS_PREFERENCES_SHOW_DELETE_PERMANENTLY);
      settings_show_create_link = g_settings_get_boolean (nautilus_preferences,
-@@ -7519,17 +6912,6 @@ real_update_actions_state (NautilusFilesView *view)
+@@ -7517,25 +6910,6 @@ real_update_actions_state (NautilusFilesView *view)
+                                      nautilus_file_can_rename (selection->data));
+     }
  
-     action = g_action_map_lookup_action (G_ACTION_MAP (view_action_group),
-                                          "extract-here");
+-    action = g_action_map_lookup_action (G_ACTION_MAP (view_action_group),
+-                                         "extract-here");
 -    g_simple_action_set_enabled (G_SIMPLE_ACTION (action),
 -                                 can_extract_files &&
 -                                 !handles_all_files_to_extract &&
@@ -2611,10 +2615,16 @@ index 8784f63f8..90fcca9d6 100644
 -                                 can_extract_files &&
 -                                 (!handles_all_files_to_extract ||
 -                                  can_extract_here));
- 
+-
+-    action = g_action_map_lookup_action (G_ACTION_MAP (view_action_group),
+-                                         "compress");
+-    g_simple_action_set_enabled (G_SIMPLE_ACTION (action),
+-                                 can_create_files && can_copy_files);
+-
      action = g_action_map_lookup_action (G_ACTION_MAP (view_action_group),
-                                          "compress");
-@@ -7804,7 +7186,6 @@ update_selection_menu (NautilusFilesView *view)
+                                          "open-item-location");
+ 
+@@ -7804,7 +7178,6 @@ update_selection_menu (NautilusFilesView *view)
      gint selection_count;
      gboolean show_app;
      gboolean show_run;
@@ -2622,7 +2632,7 @@ index 8784f63f8..90fcca9d6 100644
      gboolean item_opens_in_view;
      gchar *item_label;
      GAppInfo *app;
-@@ -7844,18 +7225,13 @@ update_selection_menu (NautilusFilesView *view)
+@@ -7844,18 +7217,13 @@ update_selection_menu (NautilusFilesView *view)
      g_free (item_label);
  
      /* Open With <App> menu item */
@@ -2642,7 +2652,7 @@ index 8784f63f8..90fcca9d6 100644
          if (!nautilus_mime_file_opens_in_external_app (file))
          {
              show_app = FALSE;
-@@ -7871,7 +7247,7 @@ update_selection_menu (NautilusFilesView *view)
+@@ -7871,7 +7239,7 @@ update_selection_menu (NautilusFilesView *view)
              item_opens_in_view = FALSE;
          }
  
@@ -2651,7 +2661,7 @@ index 8784f63f8..90fcca9d6 100644
          {
              break;
          }
-@@ -7904,12 +7280,6 @@ update_selection_menu (NautilusFilesView *view)
+@@ -7904,12 +7272,6 @@ update_selection_menu (NautilusFilesView *view)
      {
          item_label = g_strdup (_("Run"));
      }
@@ -2928,6 +2938,32 @@ index 526e9eed2..000000000
 -    </action-widgets>
 -  </object>
 -</interface>
+diff --git a/src/resources/ui/nautilus-files-view-context-menus.ui b/src/resources/ui/nautilus-files-view-context-menus.ui
+index 4a53de439..3e09cd4dc 100644
+--- a/src/resources/ui/nautilus-files-view-context-menus.ui
++++ b/src/resources/ui/nautilus-files-view-context-menus.ui
+@@ -235,21 +235,6 @@
+     </section>
+     <section>
+       <attribute name="id">extensions</attribute>
+-      <item>
+-        <attribute name="label" translatable="yes">_Extract Here</attribute>
+-        <attribute name="action">view.extract-here</attribute>
+-        <attribute name="hidden-when">action-disabled</attribute>
+-      </item>
+-      <item>
+-        <attribute name="label" translatable="yes">E_xtract to…</attribute>
+-        <attribute name="action">view.extract-to</attribute>
+-        <attribute name="hidden-when">action-disabled</attribute>
+-      </item>
+-      <item>
+-        <attribute name="label" translatable="yes">C_ompress…</attribute>
+-        <attribute name="action">view.compress</attribute>
+-        <attribute name="hidden-when">action-disabled</attribute>
+-      </item>
+     </section>
+     <section>
+       <item>
 -- 
-2.17.1
+2.20.1
 
