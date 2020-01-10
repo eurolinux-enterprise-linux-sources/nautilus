@@ -15,7 +15,7 @@
 Name:           nautilus
 Summary:        File manager for GNOME
 Version:        2.28.4
-Release:        18%{?dist}
+Release:        19%{?dist}
 License:        GPLv2+
 Group:          User Interface/Desktops
 Source:         http://download.gnome.org/sources/%{name}/2.28/%{name}-%{version}.tar.bz2
@@ -149,6 +149,21 @@ Patch39:	nautilus-2.28.4-recursive-sync-gio-calls.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=690147
 Patch40:	nautilus-2.31.5-cleanup-pathbar.patch
 
+# RHEL6.2 Beta nautilus segfaults and respawns (ad infinitum)
+# https://bugzilla.redhat.com/show_bug.cgi?id=755561
+Patch41:	nautilus-2.28.4-xdg-dirs-refresh-crashfix.patch
+
+# icons splitted among screens
+# https://bugzilla.redhat.com/show_bug.cgi?id=600260
+Patch42:	nautilus-2.28.4-screen-size-refresh.patch
+
+# free space: unknown on removable media properties tab
+# https://bugzilla.redhat.com/show_bug.cgi?id=772103
+Patch43:	nautilus-2.28.4-free-space.patch
+
+# cannot rename .desktop, .kdelnk, .theme files
+# https://bugzilla.redhat.com//show_bug.cgi?id=782467
+Patch44:	nautilus-2.28.4-desktop-file-rename.patch
 
 %description
 Nautilus is the file manager and graphical shell for the GNOME desktop
@@ -208,6 +223,10 @@ for developing nautilus extensions.
 %patch38 -p1 -b .peek-display-name
 %patch39 -p1 -b .dbus-deadlock
 %patch40 -p1 -b .cleanup-pathbar
+%patch41 -p1 -b .xdg-dirs-refresh-crashfix
+%patch42 -p1 -b .screen-size-refresh
+%patch43 -p1 -b .free-space
+%patch44 -p1 -b .desktop-file-rename
 
 
 %build
@@ -338,6 +357,12 @@ fi
 
 
 %changelog
+* Fri Mar  2 2012 Tomas Bzatek <tbzatek@redhat.com> - 2.28.4-19
+- Fix segfault on startup when showing homedir as desktop (#755561)
+- Rearrange icons on desktop when screen size changes (#600260)
+- Fix free space display in Properties window (#772103)
+- Fall back to regular file rename when updating desktop file contents fails (#782467)
+
 * Thu Jul 28 2011 Tomas Bzatek <tbzatek@redhat.com> - 2.28.4-18
 - Cleanup non-existent folders on pathbar (#690147)
 
